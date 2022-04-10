@@ -6,7 +6,7 @@ project(astroUart)
 set(BINARY ${CMAKE_PROJECT_NAME})
 
 ## src
-#set(TEST_SRCS main.cpp RequestCommand-test.cpp RequestCommand-test.h Transport.cpp Transport.h)
+#set(TEST_SRCS main.cpp RequestCommand-test.cpp RequestCommand-test.h Transport_layer.cpp Transport_layer.h)
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
 set(SOURCES ${SOURCES})
 
@@ -21,4 +21,4 @@ find_package(Threads REQUIRED)
 target_link_libraries(${BINARY}_run ${CMAKE_THREAD_LIBS_INIT})
 
 ## Google test
-add_library(${BINARY}_lib STATIC ${SOURCES} Command.cpp Command.h)
+add_library(${BINARY}_lib STATIC ${SOURCES} Application_layer.cpp Application_layer.h)

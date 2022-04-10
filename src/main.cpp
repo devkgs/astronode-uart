@@ -2,12 +2,12 @@
  * requires libasio-dev from libboost
  */
 
-#include "Transport.h"
-#include "Command.h"
+#include "Transport_layer.h"
+#include "Application_layer.h"
 /*
  * TODO
  *
- * Transport.cpp: decode answer, get if error. Return false on error in get_answer_success
+ * Transport_layer.cpp: decode answer, get if error. Return false on error in get_answer_success
  * CmakeList.txt: Different build for fake and real
  * CmakeList.txt: Change name "simple" to a better one
  * RequestCommand-test.cpp: Add arguments in opcodes with arg
@@ -41,7 +41,7 @@ using namespace std;
 #define BAUDRATE 9600
 int main(int argc, char* argv[])
 {
-    std::shared_ptr<Transport> tr = std::make_shared<Transport>();
+    std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>();
     auto cmd = new Command_cfg_r(tr);
     cmd->request_cmd();
     std::cout<<"success: "<<cmd->get_answer_success()<<std::endl;

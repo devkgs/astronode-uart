@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "Command.h"
-#include "Transport.h"
+#include "Application_layer.h"
+#include "Transport_layer.h"
 
 
 /**
@@ -19,7 +19,7 @@ using ::testing::Exactly;
 //using ::testing::AtLeast;
 //using ::testing::AtMost;
 
-class MockTransport : public Transport{
+class MockTransport : public Transport_layer{
 public:
     MOCK_METHOD(void, request_command, (const std::vector<uint8_t> command), ());
     MOCK_METHOD(bool, get_answer_success, (), ());
@@ -32,7 +32,7 @@ public:
 
 TEST(CommandTest, request_cmd_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
-    auto cmd = new Command(tr);
+    auto cmd = new Application_layer(tr);
 
     std::vector<uint8_t> data = {0};
     EXPECT_CALL(*tr, request_command(data)).Times(Exactly(1));
@@ -43,7 +43,7 @@ TEST(CommandTest, request_cmd_test){
 
 TEST(CommandTest, get_answer_success_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
-    auto cmd = new Command(tr);
+    auto cmd = new Application_layer(tr);
 
     // request_cmd not called. Should return false.
     ASSERT_FALSE(cmd->get_answer_success());
@@ -59,7 +59,7 @@ TEST(CommandTest, get_answer_success_test){
 
 TEST(CommandTest, get_answer_parameters_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
-    auto cmd = new Command(tr);
+    auto cmd = new Application_layer(tr);
     std::vector<uint8_t> data = {0x15};
     cmd->request_cmd(data);
 

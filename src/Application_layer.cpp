@@ -1,10 +1,10 @@
-#include "Command.h"
+#include "Application_layer.h"
 #include <iostream>
 #include  <iomanip>
 
-Command::Command(std::shared_ptr<Transport> tr) : tr_(std::move(tr)){}
+Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 
-void Command::request_cmd(const std::vector<uint8_t> command){
+void Application_layer::request_cmd(const std::vector<uint8_t> command){
     for(int i = 0; i < command.size(); i++){
         std::cout<<"0x"<<std::hex<<(int)command.at(i);
         if(i<command.size() - 1){
@@ -17,7 +17,7 @@ void Command::request_cmd(const std::vector<uint8_t> command){
     request_sent = true;
 }
 
-bool Command::get_answer_success() {
+bool Application_layer::get_answer_success() {
     if(request_sent == false){
         std::cout << "request was not sent" <<std::endl;
         return false;
@@ -25,7 +25,7 @@ bool Command::get_answer_success() {
     return tr_->get_answer_success();
 }
 
-std::vector<uint8_t> Command::get_answer_parameters(void){
+std::vector<uint8_t> Application_layer::get_answer_parameters(void){
     if(request_sent == false){
         std::cout << "request was not sent" << std::endl;
         return {};
@@ -39,7 +39,7 @@ void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, ui
     uint8_t byte1 = 0;
     uint8_t byte2 = ((reset_notif_evt_pin_bit & 0x01)<<1) | (payload_ack_evt_pin_bit & 0x01);
     std::vector<uint8_t> data = {0x05, byte0, byte1, byte2};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_wif_w::request_cmd(std::string wlan_ssid, std::string wlan_key, std::string auth_token) {
@@ -50,7 +50,7 @@ void Command_wif_w::request_cmd(std::string wlan_ssid, std::string wlan_key, std
     std::string tmp_data = wlan_ssid + wlan_key + auth_token;
     std::vector<uint8_t> data(tmp_data.begin(), tmp_data.end());
     data.insert(data.begin(), 0x06);
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_ssc_w::request_cmd(uint8_t sat_period_enum, uint8_t enable_search) {
@@ -58,30 +58,30 @@ void Command_ssc_w::request_cmd(uint8_t sat_period_enum, uint8_t enable_search) 
     std::vector<uint8_t> data = {0x07};
     data.insert(data.end(), sat_period_enum);
     data.insert(data.end(), enable_search == 1 ? 1 : 0);
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_cfg_s::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x10};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_cfg_f::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x11};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_cfg_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x15};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 //std::vector<uint8_t> Command_cfg_r::get_answer_parameters(void){
 //    std::cout << __PRETTY_FUNCTION__ <<std::endl;
-//    return Command::get_answer_parameters();
+//    return Application_layer::get_answer_parameters();
 //}
 
 uint8_t Command_cfg_r::get_product_id(void){
@@ -139,28 +139,28 @@ bool Command_cfg_r::get_message_transmission_pending_evt_pin_enabled(void){
 void Command_rtc_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x17};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 //std::vector<uint8_t> Command_rtc_r::get_answer_parameters(void){
 //    std::cout << __PRETTY_FUNCTION__ <<std::endl;
-//    return Command::get_answer_parameters();
+//    return Application_layer::get_answer_parameters();
 //}
 
 uint32_t Command_rtc_r::get_rtc_time(void) {
-    //std::vector<uint8_t> answer_data = Command::get_answer_parameters();
+    //std::vector<uint8_t> answer_data = Application_layer::get_answer_parameters();
     throw "myFunction is not implemented yet.";
 }
 
 void Command_nco_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x18};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 //std::vector<uint8_t> Command_nco_r::get_answer_parameters(void){
 //    std::cout << __PRETTY_FUNCTION__ <<std::endl;
-//    return Command::get_answer_parameters();
+//    return Application_layer::get_answer_parameters();
 //}
 
 uint32_t Command_nco_r::get_time_to_next_pass(void){
@@ -170,19 +170,19 @@ uint32_t Command_nco_r::get_time_to_next_pass(void){
 void Command_mgi_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x19};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_msn_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x1A};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_mpn_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x1B};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_pld_e::request_cmd(uint16_t payload_id, const std::string payload_data) {
@@ -197,31 +197,31 @@ void Command_pld_e::request_cmd(uint16_t payload_id, const std::string payload_d
     std::string tmp_data = s_payload_id + payload_data;
     std::vector<uint8_t> data(tmp_data.begin(), tmp_data.end());
     data.insert(data.begin(), 0x25);
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 uint16_t Command_pld_e::get_command_id(void) {
     // ex.  {0x03, 0xE9} = 0x03E9 = 1001
-    std::vector<uint8_t> ans_v = Command::get_answer_parameters();
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     return  (ans_v.at(0) << 8) + ans_v.at(1);;
 }
 
 void Command_pld_d::request_cmd(void){
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x26};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 uint16_t Command_pld_d::get_command_id(void) {
     // ex.  {0x03, 0xE9} = 0x03E9 = 1001
-    std::vector<uint8_t> ans_v = Command::get_answer_parameters();
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     return  (ans_v.at(0) << 8) + ans_v.at(1);;
 }
 
 void Command_pld_f::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x27};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_geo_w::request_cmd(std::string lat, std::string lng) {
@@ -231,11 +231,11 @@ void Command_geo_w::request_cmd(std::string lat, std::string lng) {
 void Command_evt_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x65};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 bool Command_evt_r::get_sak_available(void){
-    std::vector<uint8_t> ans = Command::get_answer_parameters();
+    std::vector<uint8_t> ans = Application_layer::get_answer_parameters();
     if(ans.size() != 1){
         throw "evt_ra wrong size";
     }
@@ -243,7 +243,7 @@ bool Command_evt_r::get_sak_available(void){
 }
 
 bool Command_evt_r::get_module_reset(void){
-    std::vector<uint8_t> ans = Command::get_answer_parameters();
+    std::vector<uint8_t> ans = Application_layer::get_answer_parameters();
     if(ans.size() != 1){
         throw "evt_ra wrong size";
     }
@@ -251,7 +251,7 @@ bool Command_evt_r::get_module_reset(void){
 }
 
 bool Command_evt_r::get_command_available(void){
-    std::vector<uint8_t> ans = Command::get_answer_parameters();
+    std::vector<uint8_t> ans = Application_layer::get_answer_parameters();
     if(ans.size() != 1){
         throw "evt_ra wrong size";
     }
@@ -259,7 +259,7 @@ bool Command_evt_r::get_command_available(void){
 }
 
 bool Command_evt_r::get_message_transmit_pending(void){
-    std::vector<uint8_t> ans = Command::get_answer_parameters();
+    std::vector<uint8_t> ans = Application_layer::get_answer_parameters();
     if(ans.size() != 1){
         throw "evt_ra wrong size";
     }
@@ -269,30 +269,30 @@ bool Command_evt_r::get_message_transmit_pending(void){
 void Command_sak_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x45};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 uint16_t Command_sak_r::get_command_id(void) {
     // ex.  {0x03, 0xE9} = 0x03E9 = 1001
-    std::vector<uint8_t> ans_v = Command::get_answer_parameters();
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     return  (ans_v.at(0) << 8) + ans_v.at(1);;
 }
 
 void Command_sak_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x46};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_cmd_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x47};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 uint32_t Command_cmd_r::get_created_date(void) {
     // 0x03C26700 becomes 63072000
-    std::vector<uint8_t> ans_v = Command::get_answer_parameters();
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     uint32_t created_date = (uint32_t)ans_v.at(0) << 24;
     created_date += (uint32_t)ans_v.at(1)<<16;
     created_date += (uint32_t)ans_v.at(2)<<8;
@@ -301,7 +301,7 @@ uint32_t Command_cmd_r::get_created_date(void) {
 }
 
 std::vector<uint8_t> Command_cmd_r::get_payload(void) {
-    std::vector<uint8_t> ans_v = Command::get_answer_parameters();
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     std::vector<uint8_t> payload(ans_v.begin()+4, ans_v.end());
     return payload;
 }
@@ -309,11 +309,11 @@ std::vector<uint8_t> Command_cmd_r::get_payload(void) {
 void Command_cmd_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x48};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }
 
 void Command_res_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x55};
-    Command::request_cmd(data);
+    Application_layer::request_cmd(data);
 }

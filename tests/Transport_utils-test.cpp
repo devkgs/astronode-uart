@@ -23,3 +23,11 @@ TEST(TransportUtilsTest, decode_test){
 
 }
 
+TEST(TransportUtilsTest, get_success_test){
+
+}
+
+TEST(TransportUtilsTest, get_answer_parameters_test){
+
+}
+
