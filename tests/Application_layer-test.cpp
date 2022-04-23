@@ -21,7 +21,7 @@ using ::testing::Exactly;
 
 class MockTransport : public Transport_layer{
 public:
-    MOCK_METHOD(void, request_command, (const std::vector<uint8_t> command), ());
+    MOCK_METHOD(std::vector<uint8_t>, request_command, (const std::vector<uint8_t> command), ());
     MOCK_METHOD(bool, get_answer_success, (), ());
     MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };

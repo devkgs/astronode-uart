@@ -13,7 +13,7 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
     }
     std::cout<<std::endl;
     command_id_ = command.at(0);
-    tr_->request_command(command);
+    decoded_answer_ = tr_->request_command(command);
     request_sent = true;
 }
 

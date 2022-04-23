@@ -21,4 +21,4 @@ find_package(Threads REQUIRED)
 target_link_libraries(${BINARY}_run ${CMAKE_THREAD_LIBS_INIT})
 
 ## Google test
-add_library(${BINARY}_lib STATIC ${SOURCES} Application_layer.cpp Application_layer.h)
+add_library(${BINARY}_lib STATIC ${SOURCES} Application_layer.cpp Application_layer.h Application_utils.cpp Application_utils.h)

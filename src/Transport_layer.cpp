@@ -24,11 +24,16 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
      */
 }
 
-void Transport_layer::request_command(const std::vector<uint8_t> data){
+std::vector<uint8_t> Transport_layer::request_command(const std::vector<uint8_t> data){
     std::cout<<"sending forced_to_be_override"<<std::endl;
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
     std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
     decoded_answer_ =  Transport_utils::decode(answer);
+    return decoded_answer_;
+//    t_answer a;
+//    a.sucess = true;
+//    a.params = Transport_utils::decode(answer);
+//    return a;
 }
 /* example answer to cfg_r
  2,   39,35, ....,   37,32,37,30, 3

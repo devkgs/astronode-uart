@@ -12,6 +12,7 @@ public:
     static std::vector<uint8_t> decode(std::vector<uint8_t> frame);
     static uint8_t ascii_offset(uint8_t byte);
     static uint8_t hex_offset(uint8_t byte);
+    //TODO add CRC check function
 };
 
 

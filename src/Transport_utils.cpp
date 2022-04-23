@@ -64,7 +64,6 @@ std::vector<uint8_t> Transport_utils::decode(std::vector<uint8_t> frame) {
         uint8_t first_digit = (frame.at(i) - ascii_offset(frame.at(i))) << 4;
         uint8_t second_digit = frame.at(i + 1) - ascii_offset(frame.at(i + 1));
         decoded.push_back(first_digit + second_digit);
-        //std::cout<<"decode: "<<frame.at(i)<<" "<<frame.at(i+1)<<" "<<std::hex<<first_digit+second_digit<<std::endl;
     }
     return decoded;
 }

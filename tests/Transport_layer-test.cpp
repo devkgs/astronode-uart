@@ -12,7 +12,6 @@ public:
     //MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
 
-
 TEST(TransportTest, no_answer_test){
 
 }
