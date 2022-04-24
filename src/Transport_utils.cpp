@@ -1,5 +1,4 @@
 #include "Transport_utils.h"
-#include "Command.h"
 
 #define COMMAND_CONTENT_MAX_SIZE 1024
 

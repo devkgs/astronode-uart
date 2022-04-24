@@ -2,7 +2,6 @@
 #include  <iomanip>
 
 #include "Application_layer.h"
-//#include "Application_utils.h"
 
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 
@@ -15,7 +14,8 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
     }
     std::cout<<std::endl;
     command_id_ = command.at(0);
-    decoded_answer_ = tr_->request_command(command);
+    Transport_layer::Command_t ans = tr_->request_command(command);
+    decoded_answer_ = ans.command_parameters;
     request_sent = true;
 }
 

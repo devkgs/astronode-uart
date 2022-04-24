@@ -18,9 +18,12 @@ public:
     virtual ~Application_layer() {};//= default;
     std::shared_ptr<Transport_layer> tr_;
 private:
+
+
     bool request_sent = false;
     int val_;
     uint8_t command_id_;
+  //struct Command_t ansdd;
     std::vector<uint8_t> decoded_answer_;
 
 };
