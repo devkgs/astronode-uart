@@ -1,4 +1,5 @@
 #include "Transport_utils.h"
+#include "Command.h"
 
 #define COMMAND_CONTENT_MAX_SIZE 1024
 
@@ -56,6 +57,22 @@ std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
     }
     encoded.push_back(AI_END_BYTE);
     return encoded;
+}
+
+bool Transport_utils::answer_frame_verification(std::vector<uint8_t> decoded_frame){
+    return false;
+}
+
+std::vector<uint8_t> Transport_utils::get_command_parameters(std::vector<uint8_t> decoded_frame){
+    return {decoded_frame.begin() + 1, decoded_frame.end() - 2};
+}
+
+uint8_t Transport_utils::get_command_id(std::vector<uint8_t> decoded_frame){
+    return decoded_frame.at(0);
+}
+
+std::vector<uint8_t> Transport_utils::get_command_crc(std::vector<uint8_t> decoded_frame){
+    return {decoded_frame.end() - 2, decoded_frame.end()};
 }
 
 std::vector<uint8_t> Transport_utils::decode(std::vector<uint8_t> frame) {

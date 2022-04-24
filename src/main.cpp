@@ -14,7 +14,6 @@
  * RequestCommand-test.cpp: Fill remaining empty opcodes
  * SimpleSerialFake.h: catch each opcode to return a specific answer
  * SimpleSerial.h: clean code
- * class name and methods_name
  *
  * git sub repo for googletest
  *  * ---general----

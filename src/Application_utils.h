@@ -25,8 +25,8 @@ class Exposed : private Hidden
 class Application_utils {
 public:
    // bool get_answer_success(std::vector<uint8_t> frame);
-   // uint8_t get_answer_id(std::vector<uint8_t> frame);
-
+//    uint8_t get_answer_id(std::vector<uint8_t> frame);
+//    std::vector<uint8_t> get_answer_parameters(std::vector<uint8_t> frame);
 
 
 

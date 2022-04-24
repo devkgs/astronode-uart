@@ -1,6 +1,8 @@
-#include "Application_layer.h"
 #include <iostream>
 #include  <iomanip>
+
+#include "Application_layer.h"
+//#include "Application_utils.h"
 
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 
@@ -22,7 +24,7 @@ bool Application_layer::get_answer_success() {
         std::cout << "request was not sent" <<std::endl;
         return false;
     }
-    return tr_->get_answer_success();
+    return true;
 }
 
 std::vector<uint8_t> Application_layer::get_answer_parameters(void){
@@ -30,7 +32,7 @@ std::vector<uint8_t> Application_layer::get_answer_parameters(void){
         std::cout << "request was not sent" << std::endl;
         return {};
     }
-    return tr_->get_answer_parameters();
+    return decoded_answer_;
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

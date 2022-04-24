@@ -3,6 +3,7 @@
 #include "SimpleSerial.h"
 #include <memory>
 #include "Transport_utils.h"
+#include "Command.h"
 
 std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command) {
     //open port
