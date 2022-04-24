@@ -1,0 +1,5 @@
+/lib/googletest
+/cmake-build-debug
+.idea
+.ssh
+.ssh.pub
