@@ -18,13 +18,27 @@ public:
     virtual ~Application_layer() {};//= default;
     std::shared_ptr<Transport_layer> tr_;
 private:
+    bool request_sent_ = false;
+    uint8_t command_id_sent_;
+    std::vector<uint8_t> decoded_command_parameters_;
+    uint8_t decoded_command_id_;
+    std::vector<uint8_t> decoded_answer_checksum_;
+    uint8_t decoded_answer_error_code_;
 
-
-    bool request_sent = false;
-    int val_;
-    uint8_t command_id_;
-  //struct Command_t ansdd;
-    std::vector<uint8_t> decoded_answer_;
+    typedef enum astronode_error_code
+    {
+        ASTRONODE_ERR_CODE_CRC_NOT_VALID        = 0x0001,
+        ASTRONODE_ERR_CODE_LENGTH_NOT_VALID     = 0x0011,
+        ASTRONODE_ERR_CODE_OPCODE_NOT_VALID     = 0x0121,
+        ASTRONODE_ERR_CODE_FORMAT_NOT_VALID     = 0x0601,
+        ASTRONODE_ERR_CODE_FLASH_WRITING_FAILED = 0x0611,
+        ASTRONODE_ERR_CODE_BUFFER_FULL          = 0x2501,
+        ASTRONODE_ERR_CODE_DUPLICATE_ID         = 0x2511,
+        ASTRONODE_ERR_CODE_BUFFER_EMPTY         = 0x2601,
+        ASTRONODE_ERR_CODE_INVALID_POS          = 0x3501,
+        ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
+        ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601
+    } astronode_error_code_t;
 
 };
 

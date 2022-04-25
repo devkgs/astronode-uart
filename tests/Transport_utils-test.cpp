@@ -31,14 +31,6 @@ TEST(TransportUtilsTest, answer_frame_verification){
 
 }
 
-TEST(TransportUtilsTest, get_success_test){
-
-}
-
-TEST(TransportUtilsTest, get_answer_parameters_test){
-
-}
-
 TEST(TransportUtilsTest, ascii_offset_test){
 
 }

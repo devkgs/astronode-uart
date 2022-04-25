@@ -13,26 +13,40 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
         }
     }
     std::cout<<std::endl;
-    command_id_ = command.at(0);
     Transport_layer::Command_t ans = tr_->request_command(command);
-    decoded_answer_ = ans.command_parameters;
-    request_sent = true;
+    command_id_sent_ = command.at(0);
+    decoded_command_parameters_ = ans.command_parameters;
+    decoded_command_id_ = ans.command_id;
+    decoded_answer_checksum_ = ans.command_checksum;
+    decoded_answer_error_code_ = ans.error_code;
+    request_sent_ = true;
 }
 
 bool Application_layer::get_answer_success() {
-    if(request_sent == false){
+    if(request_sent_ == false){
         std::cout << "request was not sent" <<std::endl;
         return false;
     }
+
+    // check transport layer error code
+    if(decoded_answer_error_code_ != Transport_layer::NO_ERROR){
+        return false;
+    }
+
+    // check error id
+    if((command_id_sent_ + 0x80) != decoded_command_id_){
+        return false;
+    }
+
     return true;
 }
 
 std::vector<uint8_t> Application_layer::get_answer_parameters(void){
-    if(request_sent == false){
+    if(request_sent_ == false){
         std::cout << "request was not sent" << std::endl;
         return {};
     }
-    return decoded_answer_;
+    return decoded_command_parameters_;
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

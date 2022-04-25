@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+
 #include "Application_layer.h"
 #include "Transport_layer.h"
 
@@ -44,15 +45,26 @@ TEST(CommandTest, get_answer_success_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
     auto cmd = new Application_layer(tr);
 
-////    // request_cmd not called. Should return false.
-//    ASSERT_FALSE(cmd->get_answer_success());
-////
-////    // request_cmd called before calling get_answer_success.
-//    std::vector<uint8_t> data = {0};
-//    EXPECT_CALL(*tr, request_command(data)).Times(Exactly(1));
-//    cmd->request_cmd(data);
-//    EXPECT_CALL(*tr, get_answer_success()).Times(1).WillOnce(Return(true));
-//    ASSERT_TRUE(cmd->get_answer_success());
+    // call request_command first to save locally the result
+    Transport_layer::Command_t expected_ans;
+    expected_ans.error_code = Transport_layer::NO_ERROR;
+    expected_ans.command_id = 0x95;
+    std::vector<uint8_t> data = {0x15};
+
+    // request_cmd not called, return false
+    ASSERT_EQ(false, cmd->get_answer_success());
+
+    // error code = NO_ERROR
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(true, cmd->get_answer_success());
+
+    // error code = ERROR
+    expected_ans.error_code = Transport_layer::OPEN_PORT_FAILURE;
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce((Return(expected_ans)));
+    cmd->request_cmd(data);
+    ASSERT_EQ(false, cmd->get_answer_success());
+
     delete cmd;
 }
 

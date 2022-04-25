@@ -12,6 +12,8 @@
 
 #include <boost/asio.hpp>
 #include <vector>
+#include <iostream>
+
 #include "SerialInterface.h"
 
 class SimpleSerial //: public SerialInterface

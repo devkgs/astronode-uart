@@ -8,6 +8,7 @@
  * TODO
  *
  * Transport_layer.cpp: decode answer, get if error. Return false on error in get_answer_success
+ * application_layer, create a method to return the error code from the answer parameters.
  * CmakeList.txt: Different build for fake and real
  * CmakeList.txt: Change name "simple" to a better one
  * RequestCommand-test.cpp: Add arguments in opcodes with arg

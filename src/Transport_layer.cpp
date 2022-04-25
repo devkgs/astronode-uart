@@ -1,7 +1,8 @@
-#include "Transport_layer.h"
-#include <sstream>
-#include "SimpleSerial.h"
 #include <memory>
+#include <sstream>
+
+#include "SimpleSerial.h"
+#include "Transport_layer.h"
 #include "Transport_utils.h"
 
 std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command) {
@@ -34,5 +35,6 @@ Transport_layer::Command_t Transport_layer::request_command(const std::vector<ui
     ans.command_parameters = Transport_utils::get_command_parameters(decoded_answer_);
     ans.command_id = Transport_utils::get_command_id(decoded_answer_);
     ans.command_checksum = Transport_utils::get_command_crc(decoded_answer_);
+    ans.error_code = NO_ERROR;
     return ans;
 }
