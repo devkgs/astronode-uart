@@ -5,10 +5,14 @@
 #include "Transport_layer.h"
 #include "Transport_utils.h"
 
+Transport_layer::Transport_layer(const std::string port) {
+    port_ = port;
+}
+
 std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command) {
     //open port
-    std::cout << "Open port : " << SERIAL_PORT << std::endl;
-    SimpleSerial serial(SERIAL_PORT, BAUDRATE);
+    std::cout << "Open port : " << port_ << std::endl;
+    SimpleSerial serial(port_, BAUDRATE);
     //convert to string
     std::string str(command.begin(), command.end());
     std::cout<<"send: "<<str<<std::endl;

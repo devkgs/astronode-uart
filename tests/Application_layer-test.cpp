@@ -22,6 +22,7 @@ using ::testing::Exactly;
 
 class MockTransport : public Transport_layer{
 public:
+    MockTransport(std::string port) : Transport_layer(port) {}
     MOCK_METHOD(Transport_layer::Command_t, request_command, (const std::vector<uint8_t> command), ());
    // MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
@@ -31,7 +32,7 @@ public:
 
 
 TEST(CommandTest, request_cmd_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Application_layer(tr);
 
     std::vector<uint8_t> data = {0};
@@ -42,7 +43,7 @@ TEST(CommandTest, request_cmd_test){
 }
 
 TEST(CommandTest, get_answer_success_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
@@ -69,7 +70,7 @@ TEST(CommandTest, get_answer_success_test){
 }
 
 TEST(CommandTest, get_answer_parameters_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
 
     auto cmd = new Application_layer(tr);
 
@@ -88,7 +89,7 @@ TEST(CommandTest, get_answer_parameters_test){
 // Tests for commands childs
 
 TEST(CommandTest, cfg_w_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_w(tr);
     std::vector<uint8_t> data = {0x05, 0x03, 0x0, 0x03};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -98,7 +99,7 @@ TEST(CommandTest, cfg_w_test){
 }
 
 TEST(CommandTest, wif_w_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_wif_w(tr);
 
     uint8_t wlan_ssid[SSID_LENGTH] = {0x6D, 0x79, 0x5F, 0x77, 0x69, 0x66, 0x69, 0x5F, 0x73, 0x73,0x69, 0x64};
@@ -117,7 +118,7 @@ TEST(CommandTest, wif_w_test){
 }
 
 TEST(CommandTest, ssh_w_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_ssc_w(tr);
     std::vector<uint8_t> data = {0x07, 0x12, 0x1};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -131,7 +132,7 @@ TEST(CommandTest, ssh_w_test){
 }
 
 TEST(CommandTest, cfg_s_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_s(tr);
     std::vector<uint8_t> data = {0x10};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -140,7 +141,7 @@ TEST(CommandTest, cfg_s_test){
 }
 
 TEST(CommandTest, cfg_f_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_f(tr);
     std::vector<uint8_t> data = {0x11};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -149,7 +150,7 @@ TEST(CommandTest, cfg_f_test){
 }
 
 TEST(CommandTest, cfg_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -158,7 +159,7 @@ TEST(CommandTest, cfg_r_test){
 }
 
 TEST(CommandTest, rtc_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
     Transport_layer::Command_t expected_ans;
@@ -177,7 +178,7 @@ TEST(CommandTest, rtc_r_test){
 }
 
 TEST(CommandTest, nco_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_nco_r(tr);
     std::vector<uint8_t> data = {0x18};
     Transport_layer::Command_t expected_ans;
@@ -193,7 +194,7 @@ TEST(CommandTest, nco_r_test){
 }
 
 TEST(CommandTest, mgi_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mgi_r(tr);
     std::vector<uint8_t> data = {0x19};
     Transport_layer::Command_t expected_ans;
@@ -207,7 +208,7 @@ TEST(CommandTest, mgi_r_test){
 }
 
 TEST(CommandTest, msn_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_msn_r(tr);
     std::vector<uint8_t> data = {0x1A};
     Transport_layer::Command_t expected_ans;
@@ -221,7 +222,7 @@ TEST(CommandTest, msn_r_test){
 }
 
 TEST(CommandTest, mpn_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mpn_r(tr);
     std::vector<uint8_t> data = {0x1B};
     Transport_layer::Command_t expected_ans;
@@ -235,7 +236,7 @@ TEST(CommandTest, mpn_r_test){
 }
 
 TEST(CommandTest, pld_e_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_pld_e(tr);
     std::vector<uint8_t> data = {0x03, 0xE9, 0x54, 0x65, 0x73, 0x74};
     std::vector<uint8_t> data_with_id = data;
@@ -257,7 +258,7 @@ TEST(CommandTest, pld_e_test){
 }
 
 TEST(CommandTest, pld_d_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_pld_d(tr);
     std::vector<uint8_t> data = {0x26};
     Transport_layer::Command_t command_id_ans;
@@ -272,7 +273,7 @@ TEST(CommandTest, pld_d_test){
 }
 
 TEST(CommandTest, pld_f_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_pld_f(tr);
     std::vector<uint8_t> data = {0x27};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -282,14 +283,14 @@ TEST(CommandTest, pld_f_test){
 }
 
 TEST(CommandTest, geo_w_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_geo_w(tr);
     // TODO add geo write test
     delete cmd;
 }
 
 TEST(CommandTest, evt_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_evt_r(tr);
     std::vector<uint8_t> data = {0x65};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -356,7 +357,7 @@ TEST(CommandTest, evt_r_test){
 }
 
 TEST(CommandTest, sak_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_sak_r(tr);
     std::vector<uint8_t> data = {0x45};
     Transport_layer::Command_t command_id_ans;
@@ -371,7 +372,7 @@ TEST(CommandTest, sak_r_test){
 }
 
 TEST(CommandTest, sak_c_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_sak_c(tr);
     std::vector<uint8_t> data = {0x46};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -381,7 +382,7 @@ TEST(CommandTest, sak_c_test){
 }
 
 TEST(CommandTest, cmd_r_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cmd_r(tr);
   /*  std::vector<uint8_t> data = {0x47};
     std::vector<uint8_t> payload_8bytes = {0x48, 0x65 ,0x6C, 0x6C, 0x6F, 0x31, 0x32, 0x33, 0x34};
@@ -405,7 +406,7 @@ TEST(CommandTest, cmd_r_test){
 }
 
 TEST(CommandTest, cmd_c_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cmd_c(tr);
     std::vector<uint8_t> data = {0x48};
     EXPECT_CALL(*tr, request_command(data)).Times(1);
@@ -415,7 +416,7 @@ TEST(CommandTest, cmd_c_test){
 }
 
 TEST(CommandTest, res_c_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>();
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_res_c(tr);
     std::vector<uint8_t> data = {0x55};
     EXPECT_CALL(*tr, request_command(data)).Times(1);

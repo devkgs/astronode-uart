@@ -8,11 +8,12 @@
 
 #include "SerialInterface.h"
 
-#define SERIAL_PORT "/dev/ttyUSB3"
 #define BAUDRATE 9600
 
 class Transport_layer {
 public:
+    Transport_layer(const std::string port);
+
     struct Command_t{
         uint8_t command_id;
         std::vector<uint8_t> command_parameters;
@@ -31,6 +32,7 @@ public:
     virtual Command_t request_command(const std::vector<uint8_t> command);
 
 private:
-    static std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
+     std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
+    std::string port_;
 };
 #endif //ASTROUART_TRANSPORT_LAYER_H

@@ -7,41 +7,30 @@
 /*
  * TODO
  *
- * Transport_layer.cpp: decode answer, get if error. Return false on error in get_answer_success
  * application_layer, create a method to return the error code from the answer parameters.
- * CmakeList.txt: Different build for fake and real
- * CmakeList.txt: Change name "simple" to a better one
- * RequestCommand-test.cpp: Add arguments in opcodes with arg
- * RequestCommand-test.cpp: Fill remaining empty opcodes
  * SimpleSerialFake.h: catch each opcode to return a specific answer
  * SimpleSerial.h: clean code
  *
  * git sub repo for googletest
  *  * ---general----
  * clang for code formating
- * cmake, select tests to run
  * serial port (win32, termios, (boost))
  * select which serial port driver (win32, termios, boost) to use with cmake
  * port in arguments
  */
 
-/**
- * Architecture:
- * request_command -> serial_commands
- * command ->
- * simpleSerial
- *
- *
- *
- */
-
 using namespace std;
 
 #define SERIAL_PORT "/dev/ttyUSB3"
-#define BAUDRATE 9600
+
 int main(int argc, char* argv[])
 {
-    std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>();
+    if(argc != 2){
+        cout << "Missing port as argument" << endl;
+        return -1;
+    }
+
+    std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>(argv[1]);
     auto cmd = new Command_cfg_r(tr);
     cmd->request_cmd();
     std::cout<<"success: "<<cmd->get_answer_success()<<std::endl;
