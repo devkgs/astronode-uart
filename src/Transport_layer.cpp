@@ -21,13 +21,13 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
     std::cout<<"readline"<<std::endl;
 
     return serial.readLine();
-    /*
+/*
       } catch(boost::system::system_error& e)
     {
         cout<<"Error: "<<e.what()<<endl;
         return 1;
     }
-     */
+    */
 }
 
 Transport_layer::Command_t Transport_layer::request_command(const std::vector<uint8_t> data){
@@ -39,6 +39,6 @@ Transport_layer::Command_t Transport_layer::request_command(const std::vector<ui
     ans.command_parameters = Transport_utils::get_command_parameters(decoded_answer_);
     ans.command_id = Transport_utils::get_command_id(decoded_answer_);
     ans.command_checksum = Transport_utils::get_command_crc(decoded_answer_);
-    ans.error_code = NO_ERROR;
+    ans.error_code = Transport_utils::is_answer_crc_valid(decoded_answer_) ? NO_ERROR : CRC_ERROR;
     return ans;
 }

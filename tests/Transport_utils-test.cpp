@@ -27,22 +27,7 @@ TEST(TransportUtilsTest, get_command_crc_test){
     ASSERT_EQ(expected_ans, Transport_utils::get_command_crc(frame));
 }
 
-TEST(TransportUtilsTest, answer_frame_verification){
+TEST(TransportUtilsTest, answer_frame_verification_test){
 
-}
-
-TEST(TransportUtilsTest, ascii_offset_test){
-
-}
-
-TEST(TransportUtilsTest, hex_offset_test){
-
-}
-
-TEST(TransportUtilsTest, compute_crc_test){
-
-}
-
-TEST(TransportUtilsTest, encode_test){
 
 }

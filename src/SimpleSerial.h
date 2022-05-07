@@ -80,15 +80,12 @@ public:
     //Reading data char by char, code is optimized for simplicity, not speed
     using namespace boost;
     char c;
-    //std::string result;
-  //  std::cout<<"asdflékjas"<<std::endl;
     std::vector<uint8_t> result;
     std::cout<<"received: ";
     for(;;)
     {
 
         asio::read(serial,asio::buffer(&c,1));
-//        std::cout<<"received<" << std::hex << (int)c <<">" <<std::endl;
         std::cout<<std::hex<<(int)c;
         switch(c)
         {
@@ -99,11 +96,8 @@ public:
             case '\n':
                 return result;
             case 0x03:
-                     //  std::cout << "received 0x03:" << std::hex << (int)c <<std::endl;
                 return result;
             default:
-              //  std::cout << "received : " << std::hex << (int)c <<std::endl;
-               // result+=c;
                 result.push_back(c);
         }
         std::cout<<std::endl;

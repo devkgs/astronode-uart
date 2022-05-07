@@ -58,8 +58,8 @@ std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
     return encoded;
 }
 
-bool Transport_utils::answer_frame_verification(std::vector<uint8_t> decoded_frame){
-    return false;
+bool Transport_utils::is_answer_crc_valid(std::vector<uint8_t> decoded_frame){
+    return true;   // TODO check frame crc
 }
 
 std::vector<uint8_t> Transport_utils::get_command_parameters(std::vector<uint8_t> decoded_frame){

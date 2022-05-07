@@ -49,6 +49,15 @@ std::vector<uint8_t> Application_layer::get_answer_parameters(void){
     return decoded_command_parameters_;
 }
 
+Application_layer::astronode_error_code Application_layer::get_error_code(){
+    if(request_sent_ == false){
+        std::cout << "request was not sent" << std::endl;
+        return ASTRONODE_ERR_CODE_NO_ANS;
+    }
+    // TODO add error code computation
+    return ASTRONODE_ERR_CODE_OK;
+}
+
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     uint8_t byte0 = ((deep_sleep_enabled_bit & 0x01) << 3) | ((enable_ephemeris_bit & 0x01)<<2) | ((add_geo_bit & 0x01)<<1) | (payload_ack_bit & 0x01);

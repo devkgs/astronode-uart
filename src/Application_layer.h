@@ -11,22 +11,10 @@
 
 class Application_layer{
 public:
-    Application_layer(std::shared_ptr<Transport_layer> tr);
-    virtual void request_cmd(const std::vector<uint8_t> command);
-    virtual bool get_answer_success();
-    virtual std::vector<uint8_t> get_answer_parameters(void);
-    virtual ~Application_layer() {};//= default;
-    std::shared_ptr<Transport_layer> tr_;
-private:
-    bool request_sent_ = false;
-    uint8_t command_id_sent_;
-    std::vector<uint8_t> decoded_command_parameters_;
-    uint8_t decoded_command_id_;
-    std::vector<uint8_t> decoded_answer_checksum_;
-    uint8_t decoded_answer_error_code_;
 
     typedef enum astronode_error_code
     {
+        ASTRONODE_ERR_CODE_OK                   = 0x0000,
         ASTRONODE_ERR_CODE_CRC_NOT_VALID        = 0x0001,
         ASTRONODE_ERR_CODE_LENGTH_NOT_VALID     = 0x0011,
         ASTRONODE_ERR_CODE_OPCODE_NOT_VALID     = 0x0121,
@@ -37,9 +25,26 @@ private:
         ASTRONODE_ERR_CODE_BUFFER_EMPTY         = 0x2601,
         ASTRONODE_ERR_CODE_INVALID_POS          = 0x3501,
         ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
-        ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601
+        ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
+        ASTRONODE_ERR_CODE_NO_ANS               = 0x0002
     } astronode_error_code_t;
 
+
+    Application_layer(std::shared_ptr<Transport_layer> tr);
+    virtual void request_cmd(const std::vector<uint8_t> command);
+    virtual bool get_answer_success();
+    virtual astronode_error_code get_error_code();
+    virtual std::vector<uint8_t> get_answer_parameters(void);
+    virtual ~Application_layer() {};//= default;
+    std::shared_ptr<Transport_layer> tr_;
+
+private:
+    bool request_sent_ = false;
+    uint8_t command_id_sent_;
+    std::vector<uint8_t> decoded_command_parameters_;
+    uint8_t decoded_command_id_;
+    std::vector<uint8_t> decoded_answer_checksum_;
+    uint8_t decoded_answer_error_code_;
 };
 
 class Command_cfg_w : public Application_layer{

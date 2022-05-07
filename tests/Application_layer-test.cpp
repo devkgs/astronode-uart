@@ -30,7 +30,6 @@ public:
 
 // Tests for command object
 
-
 TEST(CommandTest, request_cmd_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Application_layer(tr);
