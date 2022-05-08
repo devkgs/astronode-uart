@@ -14,9 +14,9 @@
 #include <vector>
 #include <iostream>
 
-#include "SerialInterface.h"
+#include "Serial_fake.h"
 
-class SimpleSerial //: public SerialInterface
+class SimpleSerial //: public Serial_fake
 {
 public:
     /**

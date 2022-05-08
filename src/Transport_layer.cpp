@@ -12,26 +12,27 @@ Transport_layer::Transport_layer(const std::string port) {
 std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command) {
     //open port
     std::cout << "Open port : " << port_ << std::endl;
-    SimpleSerial serial(port_, BAUDRATE);
-    //convert to string
-    std::string str(command.begin(), command.end());
-    std::cout<<"send: "<<str<<std::endl;
-    //send
-    serial.writeString(str);
-    std::cout<<"readline"<<std::endl;
+    try {
+        SimpleSerial serial(port_, BAUDRATE);
 
-    return serial.readLine();
-/*
-      } catch(boost::system::system_error& e)
-    {
-        cout<<"Error: "<<e.what()<<endl;
-        return 1;
+        //convert to string
+        std::string str(command.begin(), command.end());
+        std::cout << "send: " << str << std::endl;
+        //send
+        serial.writeString(str);
+        std::cout << "readline" << std::endl;
+
+        //read answer
+        return serial.readLine();
     }
-    */
+    catch(boost::system::system_error& e)
+    {
+        std::cout<<"Error: "<<e.what()<<std::endl;
+        return command;
+    }
 }
 
 Transport_layer::Command_t Transport_layer::request_command(const std::vector<uint8_t> data){
-    std::cout<<"sending forced_to_be_override"<<std::endl;
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
     std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
     std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);

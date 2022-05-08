@@ -2,6 +2,7 @@
 #include  <iomanip>
 
 #include "Application_layer.h"
+#include "Serial_interface.h"
 
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 

@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "SerialInterface.h"
+//#include "Serial_fake.h"
 
 #define BAUDRATE 9600
 
@@ -32,7 +32,7 @@ public:
     virtual Command_t request_command(const std::vector<uint8_t> command);
 
 private:
-     std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
+    std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
     std::string port_;
 };
 #endif //ASTROUART_TRANSPORT_LAYER_H

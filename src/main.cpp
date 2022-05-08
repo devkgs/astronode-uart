@@ -7,9 +7,12 @@
 /*
  * TODO
  *
+ * create Serial_interface object, and Serial_fake + Serial_real
+ * transport_layer::request_serial. Return error code instead of answer. Answer in arguments out.
  * application_layer, create a method to return the error code from the answer parameters.
  * SimpleSerialFake.h: catch each opcode to return a specific answer
  * SimpleSerial.h: clean code
+ * create a fake serial, which can be build to avoid using the hardware for development purpose
  *
  * git sub repo for googletest
  *  * ---general----
