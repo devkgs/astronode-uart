@@ -3,3 +3,4 @@
 .idea
 .ssh
 .ssh.pub
+/cmake-build-fake-serial

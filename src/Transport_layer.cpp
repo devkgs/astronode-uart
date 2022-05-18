@@ -1,7 +1,8 @@
 #include <memory>
 #include <sstream>
 
-#include "SimpleSerial.h"
+#include "Serial_hardware/SimpleSerial.h"
+#include "Serial_fake/Serial_fake.h"
 #include "Transport_layer.h"
 #include "Transport_utils.h"
 
@@ -13,8 +14,11 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
     //open port
     std::cout << "Open port : " << port_ << std::endl;
     try {
+#ifdef FAKE_SERIAL
         SimpleSerial serial(port_, BAUDRATE);
-
+#else
+        SimpleSerial serial(port_, BAUDRATE);
+#endif
         //convert to string
         std::string str(command.begin(), command.end());
         std::cout << "send: " << str << std::endl;

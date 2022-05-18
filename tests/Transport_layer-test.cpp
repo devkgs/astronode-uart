@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "Transport_layer.h"
-#include "SimpleSerial.h"
+#include "Serial_hardware/SimpleSerial.h"
 
 class MockSerial : public SimpleSerial{
 public:
