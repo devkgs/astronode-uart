@@ -19,16 +19,4 @@ TEST(TransportTest, request_command_test){
     tr.request_command(v);
 }
 
-TEST(TransportTest, request_serial_port_failure_test){
-
-}
-
-TEST(TransportTest, request_serial_write_failure_test){
-
-}
-
-TEST(TransportTest, request_serial_read_failure_test){
-
-}
-
-
+// TODO test all methods and error returns

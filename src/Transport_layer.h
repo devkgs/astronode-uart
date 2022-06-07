@@ -26,13 +26,14 @@ public:
         NO_ERROR                = 0,
         OPEN_PORT_FAILURE       = 1,
         TIMEOUT_ERROR           = 2,
-        CRC_ERROR               = 3
+        CRC_ERROR               = 3,
+        NO_VALUE_ERROR          = 4
     }serial_error_code_t;
 
     virtual Command_t request_command(const std::vector<uint8_t> command);
-
-private:
     std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
+private:
+
     std::string port_;
 };
 #endif //ASTROUART_TRANSPORT_LAYER_H

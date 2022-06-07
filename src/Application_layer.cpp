@@ -7,6 +7,7 @@
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 
 void Application_layer::request_cmd(const std::vector<uint8_t> command){
+    std::cout<<"Application_layer::request_cmd"<<std::endl;
     for(int i = 0; i < command.size(); i++){
         std::cout<<"0x"<<std::hex<<(int)command.at(i);
         if(i<command.size() - 1){

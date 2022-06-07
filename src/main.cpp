@@ -7,7 +7,7 @@
 /*
  * TODO
  *
- * create Serial_interface object, and Serial_fake + Serial_real
+ * Serial class is useless, how can we make it useful
  * transport_layer::request_serial. Return error code instead of answer. Answer in arguments out.
  * application_layer, create a method to return the error code from the answer parameters.
  * SimpleSerialFake.h: catch each opcode to return a specific answer
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         cout << "Missing port as argument" << endl;
         return -1;
     }
-
+    std::cout<<"==================================================="<<std::endl;
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>(argv[1]);
     auto cmd = new Command_cfg_r(tr);
     cmd->request_cmd();

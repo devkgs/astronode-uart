@@ -15,16 +15,16 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
     std::cout << "Open port : " << port_ << std::endl;
     try {
 #ifdef FAKE_SERIAL
-        SimpleSerial serial(port_, BAUDRATE);
+        Serial_fake serial(port_, BAUDRATE);
 #else
         SimpleSerial serial(port_, BAUDRATE);
 #endif
         //convert to string
         std::string str(command.begin(), command.end());
-        std::cout << "send: " << str << std::endl;
+        std::cout << "Transport::send: " << str << std::endl;
         //send
         serial.writeString(str);
-        std::cout << "readline" << std::endl;
+        std::cout << "Transport::readline" << std::endl;
 
         //read answer
         return serial.readLine();
@@ -39,8 +39,15 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
 Transport_layer::Command_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
     std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
-    std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);
+    // TODO catch serial errors and empty answers
+    // TODO check that answer size is > 6 (ID + checksum)
     struct Command_t ans;
+    if(answer.size() < 6){
+        ans.error_code = NO_VALUE_ERROR;
+        return ans;
+    }
+    std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);
+
     ans.command_parameters = Transport_utils::get_command_parameters(decoded_answer_);
     ans.command_id = Transport_utils::get_command_id(decoded_answer_);
     ans.command_checksum = Transport_utils::get_command_crc(decoded_answer_);
