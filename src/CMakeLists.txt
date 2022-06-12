@@ -16,7 +16,7 @@ set(SOURCES ${SOURCES})
 #fake serial build
 if (FAKE_SERIAL_BUILD STREQUAL 1)
     add_definitions(-DFAKE_SERIAL)
-    add_executable(${BINARY}_fake_serial ${SOURCES} Serial_fake/Serial_fake.cpp)
+    add_executable(${BINARY}_fake_serial ${SOURCES} Serial_fake/Serial_fake.cpp Opcodes_id.h)
 
 else()
     add_executable(${BINARY}_run ${SOURCES})
