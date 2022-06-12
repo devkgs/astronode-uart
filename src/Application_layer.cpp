@@ -3,6 +3,7 @@
 
 #include "Application_layer.h"
 #include "Serial_interface.h"
+#include "Opcodes_id.h"
 
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
 
@@ -65,7 +66,7 @@ void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, ui
     uint8_t byte0 = ((deep_sleep_enabled_bit & 0x01) << 3) | ((enable_ephemeris_bit & 0x01)<<2) | ((add_geo_bit & 0x01)<<1) | (payload_ack_bit & 0x01);
     uint8_t byte1 = 0;
     uint8_t byte2 = ((reset_notif_evt_pin_bit & 0x01)<<1) | (payload_ack_evt_pin_bit & 0x01);
-    std::vector<uint8_t> data = {0x05, byte0, byte1, byte2};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CFG_WR, byte0, byte1, byte2};
     Application_layer::request_cmd(data);
 }
 
@@ -76,13 +77,13 @@ void Command_wif_w::request_cmd(std::string wlan_ssid, std::string wlan_key, std
     auth_token.insert(auth_token.end(), TOKEN_LENGTH - auth_token.size(), '\0');// zeros padding
     std::string tmp_data = wlan_ssid + wlan_key + auth_token;
     std::vector<uint8_t> data(tmp_data.begin(), tmp_data.end());
-    data.insert(data.begin(), 0x06);
+    data.insert(data.begin(), ASTRONODE_OP_CODE_WIF_WR);
     Application_layer::request_cmd(data);
 }
 
 void Command_ssc_w::request_cmd(uint8_t sat_period_enum, uint8_t enable_search) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x07};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_SSC_WR};
     data.insert(data.end(), sat_period_enum);
     data.insert(data.end(), enable_search == 1 ? 1 : 0);
     Application_layer::request_cmd(data);
@@ -90,19 +91,19 @@ void Command_ssc_w::request_cmd(uint8_t sat_period_enum, uint8_t enable_search) 
 
 void Command_cfg_s::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x10};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CFG_SR};
     Application_layer::request_cmd(data);
 }
 
 void Command_cfg_f::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x11};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CFG_FR};
     Application_layer::request_cmd(data);
 }
 
 void Command_cfg_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x15};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CFG_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -165,7 +166,7 @@ bool Command_cfg_r::get_message_transmission_pending_evt_pin_enabled(void){
 
 void Command_rtc_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x17};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_RTC_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -181,7 +182,7 @@ uint32_t Command_rtc_r::get_rtc_time(void) {
 
 void Command_nco_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x18};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_NCO_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -196,19 +197,19 @@ uint32_t Command_nco_r::get_time_to_next_pass(void){
 
 void Command_mgi_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x19};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_DGI_RR};
     Application_layer::request_cmd(data);
 }
 
 void Command_msn_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x1A};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_DSN_RR};
     Application_layer::request_cmd(data);
 }
 
 void Command_mpn_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x1B};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_MPN_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -223,7 +224,7 @@ void Command_pld_e::request_cmd(uint16_t payload_id, const std::string payload_d
 
     std::string tmp_data = s_payload_id + payload_data;
     std::vector<uint8_t> data(tmp_data.begin(), tmp_data.end());
-    data.insert(data.begin(), 0x25);
+    data.insert(data.begin(), ASTRONODE_OP_CODE_PLD_ER);
     Application_layer::request_cmd(data);
 }
 
@@ -235,7 +236,7 @@ uint16_t Command_pld_e::get_command_id(void) {
 
 void Command_pld_d::request_cmd(void){
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x26};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_PLD_DR};
     Application_layer::request_cmd(data);
 }
 
@@ -247,7 +248,7 @@ uint16_t Command_pld_d::get_command_id(void) {
 
 void Command_pld_f::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x27};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_PLD_FR};
     Application_layer::request_cmd(data);
 }
 
@@ -257,7 +258,7 @@ void Command_geo_w::request_cmd(std::string lat, std::string lng) {
 
 void Command_evt_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x65};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_EVT_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -295,7 +296,7 @@ bool Command_evt_r::get_message_transmit_pending(void){
 
 void Command_sak_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x45};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_SAK_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -307,13 +308,13 @@ uint16_t Command_sak_r::get_command_id(void) {
 
 void Command_sak_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x46};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_SAK_CR};
     Application_layer::request_cmd(data);
 }
 
 void Command_cmd_r::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x47};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CMD_RR};
     Application_layer::request_cmd(data);
 }
 
@@ -335,12 +336,12 @@ std::vector<uint8_t> Command_cmd_r::get_payload(void) {
 
 void Command_cmd_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x48};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_CMD_CR};
     Application_layer::request_cmd(data);
 }
 
 void Command_res_c::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
-    std::vector<uint8_t> data = {0x55};
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_RES_CR};
     Application_layer::request_cmd(data);
 }

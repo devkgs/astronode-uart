@@ -7,7 +7,6 @@
 /*
  * TODO
  *
- * use opcodes_id.h to set the opcodes in application layer.
  * Serial class is useless, how can we make it useful
  * transport_layer::request_serial. Return error code instead of answer. Answer in arguments out.
  * application_layer, create a method to return the error code from the answer parameters.
