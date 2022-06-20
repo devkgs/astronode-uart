@@ -65,7 +65,54 @@ TEST(CommandTest, get_answer_success_test){
     cmd->request_cmd(data);
     ASSERT_EQ(false, cmd->get_answer_success());
 
+    // terminal answer with error
+    expected_ans.command_id = 0xff;
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(false, cmd->get_answer_success());
+
     delete cmd;
+}
+
+TEST(CommandTest, get_answer_error_code_test){
+
+}
+
+TEST(CommandTest, get_transport_error_code_test){
+//    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+//    auto cmd = new Application_layer(tr);
+//
+//    // request_cmd not called
+//    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_ANS, cmd->get_answer_error_code());
+//
+//    // call request_command first to save locally the result
+//    Transport_layer::Command_t expected_ans;
+//    expected_ans.command_id = 0x95;
+//    std::vector<uint8_t> data = {0x15};
+//
+//    // No error
+//    expected_ans.error_code = Transport_layer::serial_error_code_t::NO_ERROR;
+//    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+//    cmd->request_cmd(data);
+//    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+//
+//    // Empty answer
+//    expected_ans.error_code = Transport_layer::serial_error_code_t::NO_VALUE_ERROR;
+//    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+//    cmd->request_cmd(data);
+//    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_ANS, cmd->get_answer_error_code());
+//
+//    // CRC error
+//    expected_ans.error_code = Transport_layer::serial_error_code_t::CRC_ERROR;
+//    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+//    cmd->request_cmd(data);
+//    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_CRC_NOT_VALID, cmd->get_answer_error_code());
+//
+//    // Open port failure
+//    expected_ans.error_code = Transport_layer::serial_error_code_t::OPEN_PORT_FAILURE;
+//    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+//    cmd->request_cmd(data);
+//    ASSERT_EQ(Application_layer::astronode_error_code::, cmd->get_answer_error_code());
 }
 
 TEST(CommandTest, get_answer_parameters_test){

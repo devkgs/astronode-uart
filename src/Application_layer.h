@@ -26,14 +26,13 @@ public:
         ASTRONODE_ERR_CODE_INVALID_POS          = 0x3501,
         ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
         ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
-        ASTRONODE_ERR_CODE_NO_ANS               = 0x0002
     } astronode_error_code_t;
 
 
     Application_layer(std::shared_ptr<Transport_layer> tr);
     virtual void request_cmd(const std::vector<uint8_t> command);
     virtual bool get_answer_success();
-    virtual astronode_error_code get_error_code();
+    virtual astronode_error_code get_answer_error_code();
     virtual std::vector<uint8_t> get_answer_parameters(void);
     virtual ~Application_layer() {};//= default;
     std::shared_ptr<Transport_layer> tr_;
@@ -41,8 +40,8 @@ public:
 private:
     bool request_sent_ = false;
     uint8_t command_id_sent_;
-    std::vector<uint8_t> decoded_command_parameters_;
-    uint8_t decoded_command_id_;
+    std::vector<uint8_t> decoded_answer_parameters_;
+    uint8_t decoded_answer_command_id_;
     std::vector<uint8_t> decoded_answer_checksum_;
     uint8_t decoded_answer_error_code_;
 };

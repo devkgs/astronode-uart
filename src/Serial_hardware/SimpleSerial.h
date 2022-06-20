@@ -14,9 +14,7 @@
 #include <vector>
 #include <iostream>
 
-#include "Serial_fake/Serial_fake.h"        // TODO remove this include
-
-class SimpleSerial //: public Serial_fake // TODO make it child of Serial class
+class SimpleSerial
 {
 public:
     /**

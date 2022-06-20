@@ -2,6 +2,7 @@
 //#include "gmock/gmock.h"
 #include "Serial_fake/Serial_fake.h"
 #include "Application_layer.h"
+//#include "Transport_layer.h"
 
 TEST(SerialFakeTests, cfg_w_test){
     std::vector<uint8_t> expected_ans = {};
@@ -21,13 +22,14 @@ TEST(SerialFakeTests, wif_w_test){
     ASSERT_EQ(true, cmd->get_answer_success());
 }
 
-TEST(SerialFakeTests, ssc_w_test){
+TEST(SerialFakeTests, ssc_w_void_answer_test){
     std::vector<uint8_t> expected_ans = {};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
     auto cmd = new Command_ssc_w(tr);
     cmd->request_cmd(0, 0);
  //   ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
     ASSERT_EQ(false, cmd->get_answer_success());
+//    ASSERT_EQ(Transport_layer::serial_error_code_t::NO_VALUE_ERROR, cmd->get_answer_error_code());
 }
 
 // TODO test ssc_w fake

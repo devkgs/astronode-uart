@@ -7,8 +7,9 @@
 /*
  * TODO
  *
- * Serial class is useless, how can we make it useful
- * transport_layer::request_serial. Return error code instead of answer. Answer in arguments out.
+ * error code, if the terminal has an error, the id will be 0xff instead of the normal answers id
+ * error codes, two types, error codes from device ans and error codes from transport_layer
+ * get_answer_error_code, compute error codes and return the right value
  * application_layer, create a method to return the error code from the answer parameters.
  * SimpleSerialFake.h: catch each opcode to return a specific answer
  * SimpleSerial.h: clean code

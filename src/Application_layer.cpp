@@ -2,7 +2,7 @@
 #include  <iomanip>
 
 #include "Application_layer.h"
-#include "Serial_interface.h"
+//#include "Serial_interface.h"
 #include "Opcodes_id.h"
 
 Application_layer::Application_layer(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
@@ -18,8 +18,8 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
     std::cout<<std::endl;
     Transport_layer::Command_t ans = tr_->request_command(command);
     command_id_sent_ = command.at(0);
-    decoded_command_parameters_ = ans.command_parameters;
-    decoded_command_id_ = ans.command_id;
+    decoded_answer_parameters_ = ans.command_parameters;
+    decoded_answer_command_id_ = ans.command_id;
     decoded_answer_checksum_ = ans.command_checksum;
     decoded_answer_error_code_ = ans.error_code;
     request_sent_ = true;
@@ -37,7 +37,7 @@ bool Application_layer::get_answer_success() {
     }
 
     // check error id
-    if((command_id_sent_ + 0x80) != decoded_command_id_){
+    if((command_id_sent_ + 0x80) != decoded_answer_command_id_){
         return false;
     }
 
@@ -49,16 +49,36 @@ std::vector<uint8_t> Application_layer::get_answer_parameters(void){
         std::cout << "request was not sent" << std::endl;
         return {};
     }
-    return decoded_command_parameters_;
+    return decoded_answer_parameters_;
 }
 
-Application_layer::astronode_error_code Application_layer::get_error_code(){
+Application_layer::astronode_error_code Application_layer::get_answer_error_code(){
     if(request_sent_ == false){
         std::cout << "request was not sent" << std::endl;
-        return ASTRONODE_ERR_CODE_NO_ANS;
+        return ASTRONODE_ERR_CODE_OK;   // not ok but no other solution
     }
-    // TODO add error code computation
-    return ASTRONODE_ERR_CODE_OK;
+
+    if(decoded_answer_command_id_ == 0xFF){
+        return ASTRONODE_ERR_CODE_CRC_NOT_VALID; // TODO, get uint16 parameter @offset 0
+    } else{
+        return ASTRONODE_ERR_CODE_OK;
+    }
+ //   return Transport_layer::serial_error_code_t;
+
+//    ASTRONODE_ERR_CODE_OK                   = 0x0000,
+//    ASTRONODE_ERR_CODE_CRC_NOT_VALID        = 0x0001,
+//    ASTRONODE_ERR_CODE_LENGTH_NOT_VALID     = 0x0011,
+//    ASTRONODE_ERR_CODE_OPCODE_NOT_VALID     = 0x0121,
+//    ASTRONODE_ERR_CODE_FORMAT_NOT_VALID     = 0x0601,
+//    ASTRONODE_ERR_CODE_FLASH_WRITING_FAILED = 0x0611,
+//    ASTRONODE_ERR_CODE_BUFFER_FULL          = 0x2501,
+//    ASTRONODE_ERR_CODE_DUPLICATE_ID         = 0x2511,
+//    ASTRONODE_ERR_CODE_BUFFER_EMPTY         = 0x2601,
+//    ASTRONODE_ERR_CODE_INVALID_POS          = 0x3501,
+//    ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
+//    ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
+
+   // return ASTRONODE_ERR_CODE_OK;
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

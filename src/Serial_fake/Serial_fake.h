@@ -7,7 +7,7 @@
 #include "Serial_interface.h"
 #include "Transport_utils.h"
 
-class Serial_fake{//: public Serial{
+class Serial_fake{
 public:
     Serial_fake(std::string port, unsigned int baud_rate);
     void writeString(std::string s);
