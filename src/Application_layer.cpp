@@ -55,30 +55,17 @@ std::vector<uint8_t> Application_layer::get_answer_parameters(void){
 Application_layer::astronode_error_code Application_layer::get_answer_error_code(){
     if(request_sent_ == false){
         std::cout << "request was not sent" << std::endl;
-        return ASTRONODE_ERR_CODE_OK;   // not ok but no other solution
+        return ASTRONODE_ERR_CODE_OK;   // not ok but no other value in astronode_error_code
     }
 
     if(decoded_answer_command_id_ == 0xFF){
-        return ASTRONODE_ERR_CODE_CRC_NOT_VALID; // TODO, get uint16 parameter @offset 0
+        // TODO check param size
+        uint16_t error_code = (decoded_answer_parameters_.at(0) << 8 ) | decoded_answer_parameters_.at(1);
+        std::cout<<"error code = "<<error_code<<std::endl;
+        return static_cast<Application_layer::astronode_error_code> (error_code);
     } else{
         return ASTRONODE_ERR_CODE_OK;
     }
- //   return Transport_layer::serial_error_code_t;
-
-//    ASTRONODE_ERR_CODE_OK                   = 0x0000,
-//    ASTRONODE_ERR_CODE_CRC_NOT_VALID        = 0x0001,
-//    ASTRONODE_ERR_CODE_LENGTH_NOT_VALID     = 0x0011,
-//    ASTRONODE_ERR_CODE_OPCODE_NOT_VALID     = 0x0121,
-//    ASTRONODE_ERR_CODE_FORMAT_NOT_VALID     = 0x0601,
-//    ASTRONODE_ERR_CODE_FLASH_WRITING_FAILED = 0x0611,
-//    ASTRONODE_ERR_CODE_BUFFER_FULL          = 0x2501,
-//    ASTRONODE_ERR_CODE_DUPLICATE_ID         = 0x2511,
-//    ASTRONODE_ERR_CODE_BUFFER_EMPTY         = 0x2601,
-//    ASTRONODE_ERR_CODE_INVALID_POS          = 0x3501,
-//    ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
-//    ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
-
-   // return ASTRONODE_ERR_CODE_OK;
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

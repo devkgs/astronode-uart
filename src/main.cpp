@@ -7,8 +7,10 @@
 /*
  * TODO
  *
+ * in application_layer-test, rename expected_ans, because it's not the expected ans but the sent command
  * error code, if the terminal has an error, the id will be 0xff instead of the normal answers id
  * error codes, two types, error codes from device ans and error codes from transport_layer
+ * application_layer.request_cmd should return the transport_layer return value
  * get_answer_error_code, compute error codes and return the right value
  * application_layer, create a method to return the error code from the answer parameters.
  * SimpleSerialFake.h: catch each opcode to return a specific answer

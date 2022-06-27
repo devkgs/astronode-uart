@@ -75,7 +75,47 @@ TEST(CommandTest, get_answer_success_test){
 }
 
 TEST(CommandTest, get_answer_error_code_test){
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Application_layer(tr);
 
+    // call request_command first to save locally the result
+    Transport_layer::Command_t expected_ans;
+    expected_ans.error_code = Transport_layer::NO_ERROR;
+    expected_ans.command_id = 0x85;
+    expected_ans.command_parameters = {0};
+
+    std::vector<uint8_t> data = {0x15};
+
+    // request_cmd not called. Return error code ok since there is no way to inform that request was not sent
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+
+    // no error
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+
+    // weird case, command_id says error, but param says no error
+    expected_ans.command_id = 0xff;
+    expected_ans.command_parameters = {0x0, 0x0};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+
+    // error code crc not valid
+    expected_ans.command_id = 0xff;
+    expected_ans.command_parameters = {0x0, 0x1};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_CRC_NOT_VALID, cmd->get_answer_error_code());
+
+    // not all error codes are tested
+
+    // error code no clear
+    expected_ans.command_id = 0xff;
+    expected_ans.command_parameters = {0x46, 0x01};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_CLEAR, cmd->get_answer_error_code());
 }
 
 TEST(CommandTest, get_transport_error_code_test){
