@@ -9,7 +9,7 @@ public:
     MOCK_METHOD(void, writeString, (std::string port), ());
     MOCK_METHOD(std::vector<uint8_t>, readLine, (), ());
     //MockTransport(std::string port) : Transport_layer(port) {}
-    //MOCK_METHOD(Transport_layer::Command_t, request_command, (const std::vector<uint8_t> command), ());
+    //MOCK_METHOD(Transport_layer::command_t, request_command, (const std::vector<uint8_t> command), ());
     //MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
 

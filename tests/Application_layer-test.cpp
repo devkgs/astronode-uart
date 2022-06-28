@@ -23,7 +23,7 @@ using ::testing::Exactly;
 class MockTransport : public Transport_layer{
 public:
     MockTransport(std::string port) : Transport_layer(port) {}
-    MOCK_METHOD(Transport_layer::Command_t, request_command, (const std::vector<uint8_t> command), ());
+    MOCK_METHOD(Transport_layer::command_t, request_command, (const std::vector<uint8_t> command), ());
    // MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
 
@@ -46,7 +46,7 @@ TEST(CommandTest, get_answer_success_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.error_code = Transport_layer::NO_ERROR;
     expected_ans.command_id = 0x95;
     std::vector<uint8_t> data = {0x15};
@@ -79,7 +79,7 @@ TEST(CommandTest, get_answer_error_code_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.error_code = Transport_layer::NO_ERROR;
     expected_ans.command_id = 0x85;
     expected_ans.command_parameters = {0};
@@ -126,7 +126,7 @@ TEST(CommandTest, get_transport_error_code_test){
 //    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_ANS, cmd->get_answer_error_code());
 //
 //    // call request_command first to save locally the result
-//    Transport_layer::Command_t expected_ans;
+//    Transport_layer::command_t expected_ans;
 //    expected_ans.command_id = 0x95;
 //    std::vector<uint8_t> data = {0x15};
 //
@@ -161,7 +161,7 @@ TEST(CommandTest, get_answer_parameters_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x12, 0x34};
     std::vector<uint8_t> data = {0x15};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
@@ -248,7 +248,7 @@ TEST(CommandTest, rtc_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x12, 0x34, 0x56, 0x78};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -267,7 +267,7 @@ TEST(CommandTest, nco_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_nco_r(tr);
     std::vector<uint8_t> data = {0x18};
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x12, 0x34, 0x56, 0x78};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -283,7 +283,7 @@ TEST(CommandTest, mgi_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mgi_r(tr);
     std::vector<uint8_t> data = {0x19};
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -297,7 +297,7 @@ TEST(CommandTest, msn_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_msn_r(tr);
     std::vector<uint8_t> data = {0x1A};
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -311,7 +311,7 @@ TEST(CommandTest, mpn_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mpn_r(tr);
     std::vector<uint8_t> data = {0x1B};
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -328,7 +328,7 @@ TEST(CommandTest, pld_e_test){
     std::vector<uint8_t> data_with_id = data;
     data_with_id.insert(data_with_id.begin(), 0x25);
 
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data_with_id)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd(1001, "Test");
@@ -347,7 +347,7 @@ TEST(CommandTest, pld_d_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_pld_d(tr);
     std::vector<uint8_t> data = {0x26};
-    Transport_layer::Command_t command_id_ans;
+    Transport_layer::command_t command_id_ans;
     command_id_ans.command_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(command_id_ans));
     cmd->request_cmd();
@@ -383,7 +383,7 @@ TEST(CommandTest, evt_r_test){
     cmd->request_cmd();
 
     // get parameters test
-    Transport_layer::Command_t expected_ans;
+    Transport_layer::command_t expected_ans;
     expected_ans.command_parameters = {0xf};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
@@ -446,7 +446,7 @@ TEST(CommandTest, sak_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_sak_r(tr);
     std::vector<uint8_t> data = {0x45};
-    Transport_layer::Command_t command_id_ans;
+    Transport_layer::command_t command_id_ans;
     command_id_ans.command_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(command_id_ans));
     cmd->request_cmd();
@@ -473,7 +473,7 @@ TEST(CommandTest, cmd_r_test){
   /*  std::vector<uint8_t> data = {0x47};
     std::vector<uint8_t> payload_8bytes = {0x48, 0x65 ,0x6C, 0x6C, 0x6F, 0x31, 0x32, 0x33, 0x34};
 
-    Transport_layer::Command_t command_id_ans;
+    Transport_layer::command_t command_id_ans;
     command_id_ans.command_parameters = {0x03, 0xE9};
 
     std::vector<uint8_t> expected_ans = {0x03, 0xC2, 0x67, 0x00};

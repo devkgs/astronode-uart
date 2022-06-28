@@ -8,7 +8,6 @@
  * TODO
  *
  * in application_layer-test, rename expected_ans, because it's not the expected ans but the sent command
- * error code, if the terminal has an error, the id will be 0xff instead of the normal answers id
  * error codes, two types, error codes from device ans and error codes from transport_layer
  * application_layer.request_cmd should return the transport_layer return value
  * get_answer_error_code, compute error codes and return the right value
@@ -25,7 +24,7 @@
  * port in arguments
  *
  * Improvements:
- * refactor Command_t into an object. Move decoding and parsing method into this object.
+ * refactor command_t into an object. Move decoding and parsing method into this object.
  */
 
 using namespace std;

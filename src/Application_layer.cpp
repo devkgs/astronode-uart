@@ -16,7 +16,7 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
         }
     }
     std::cout<<std::endl;
-    Transport_layer::Command_t ans = tr_->request_command(command);
+    Transport_layer::command_t ans = tr_->request_command(command);
     command_id_sent_ = command.at(0);
     decoded_answer_parameters_ = ans.command_parameters;
     decoded_answer_command_id_ = ans.command_id;

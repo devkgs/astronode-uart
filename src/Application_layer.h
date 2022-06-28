@@ -12,6 +12,9 @@
 class Application_layer{
 public:
 
+    struct command_answer_t{
+
+    };
     typedef enum astronode_error_code
     {
         ASTRONODE_ERR_CODE_OK                   = 0x0000,

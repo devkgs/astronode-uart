@@ -36,11 +36,11 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
     }
 }
 
-Transport_layer::Command_t Transport_layer::request_command(const std::vector<uint8_t> data){
+Transport_layer::command_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
     std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
     // TODO check that answer size is > 6 (ID + checksum)
-    struct Command_t ans;
+    struct command_t ans;
     if(answer.size() < 6){
         ans.error_code = NO_VALUE_ERROR;
         return ans;

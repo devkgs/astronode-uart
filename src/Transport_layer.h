@@ -14,7 +14,7 @@ class Transport_layer {
 public:
     Transport_layer(const std::string port);
 
-    struct Command_t{
+    struct command_t{
         uint8_t command_id;
         std::vector<uint8_t> command_parameters;
         std::vector<uint8_t> command_checksum;
@@ -30,7 +30,7 @@ public:
         NO_VALUE_ERROR          = 4
     }serial_error_code_t;
 
-    virtual Command_t request_command(const std::vector<uint8_t> command);
+    virtual command_t request_command(const std::vector<uint8_t> command);
     std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
 private:
 
