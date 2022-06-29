@@ -25,8 +25,8 @@ void Serial_fake::writeString(std::string request) {
             break;
         // TODO cases for all opcodes
         default:
-            //command_id += 0x80;
-            answer_ = Transport_utils::encode({0xff/*command_id*/});    //TODO add error code
+            //answer_id += 0x80;
+            answer_ = Transport_utils::encode({0xff/*answer_id*/});    //TODO add error code
             break;
     }
 }

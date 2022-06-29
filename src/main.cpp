@@ -8,7 +8,8 @@
  * TODO
  *
  * in application_layer-test, rename expected_ans, because it's not the expected ans but the sent command
- * error codes, two types, error codes from device ans and error codes from transport_layer
+ * use a thread for the serial communication
+ * use opcode_id.h to store the error codes
  * application_layer.request_cmd should return the transport_layer return value
  * get_answer_error_code, compute error codes and return the right value
  * application_layer, create a method to return the error code from the answer parameters.
@@ -24,7 +25,7 @@
  * port in arguments
  *
  * Improvements:
- * refactor command_t into an object. Move decoding and parsing method into this object.
+ * refactor answer_t into an object. Move decoding and parsing method into this object.
  */
 
 using namespace std;

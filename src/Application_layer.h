@@ -13,8 +13,11 @@ class Application_layer{
 public:
 
     struct command_answer_t{
-
+        uint8_t id;
+        std::vector<uint8_t> parameters;
+        uint8_t error_code;
     };
+
     typedef enum astronode_error_code
     {
         ASTRONODE_ERR_CODE_OK                   = 0x0000,
@@ -31,11 +34,20 @@ public:
         ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
     } astronode_error_code_t;
 
+    typedef enum serial_port_error_code
+    {
+        NO_ERROR                = 0,
+        OPEN_PORT_FAILURE       = 1,
+        TIMEOUT_ERROR           = 2,
+        CRC_ERROR               = 3,
+        NO_VALUE_ERROR          = 4
+    }serial_port_error_code_t;
 
     Application_layer(std::shared_ptr<Transport_layer> tr);
     virtual void request_cmd(const std::vector<uint8_t> command);
     virtual bool get_answer_success();
     virtual astronode_error_code get_answer_error_code();
+    virtual serial_port_error_code get_serial_port_error_code();
     virtual std::vector<uint8_t> get_answer_parameters(void);
     virtual ~Application_layer() {};//= default;
     std::shared_ptr<Transport_layer> tr_;

@@ -16,11 +16,11 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
         }
     }
     std::cout<<std::endl;
-    Transport_layer::command_t ans = tr_->request_command(command);
+    Transport_layer::answer_t ans = tr_->request_command(command);
     command_id_sent_ = command.at(0);
-    decoded_answer_parameters_ = ans.command_parameters;
-    decoded_answer_command_id_ = ans.command_id;
-    decoded_answer_checksum_ = ans.command_checksum;
+    decoded_answer_parameters_ = ans.answer_parameters;
+    decoded_answer_command_id_ = ans.answer_id;
+    decoded_answer_checksum_ = ans.answer_checksum;
     decoded_answer_error_code_ = ans.error_code;
     request_sent_ = true;
 }
@@ -66,6 +66,10 @@ Application_layer::astronode_error_code Application_layer::get_answer_error_code
     } else{
         return ASTRONODE_ERR_CODE_OK;
     }
+}
+
+Application_layer::serial_port_error_code_t Application_layer::get_serial_port_error_code(){
+    return static_cast<Application_layer::serial_port_error_code> (decoded_answer_error_code_);
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

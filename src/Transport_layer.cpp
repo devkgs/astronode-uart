@@ -36,20 +36,20 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
     }
 }
 
-Transport_layer::command_t Transport_layer::request_command(const std::vector<uint8_t> data){
+Transport_layer::answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
     std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
     // TODO check that answer size is > 6 (ID + checksum)
-    struct command_t ans;
+    struct answer_t ans;
     if(answer.size() < 6){
         ans.error_code = NO_VALUE_ERROR;
         return ans;
     }
     std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);
 
-    ans.command_parameters = Transport_utils::get_command_parameters(decoded_answer_);
-    ans.command_id = Transport_utils::get_command_id(decoded_answer_);
-    ans.command_checksum = Transport_utils::get_command_crc(decoded_answer_);
+    ans.answer_parameters = Transport_utils::get_command_parameters(decoded_answer_);
+    ans.answer_id = Transport_utils::get_command_id(decoded_answer_);
+    ans.answer_checksum = Transport_utils::get_command_crc(decoded_answer_);
     ans.error_code = Transport_utils::is_answer_crc_valid(decoded_answer_) ? NO_ERROR : CRC_ERROR;
     return ans;
 }
