@@ -20,8 +20,8 @@ void Serial_fake::writeString(std::string request) {
         case ASTRONODE_OP_CODE_CFG_WR:
             answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_CFG_WA});
             break;
-        case ASTRONODE_OP_CODE_WIF_WR:
-            answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_WIF_WA});
+        case ASTRONODE_OP_CODE_CFG_RR:
+            answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_CFG_RA, 1, 2, 3, 4, 5, 6, 7, 8});
             break;
         // TODO cases for all opcodes
         default:

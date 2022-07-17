@@ -19,7 +19,7 @@ TEST(SerialFakeTests, wif_w_test){
     auto cmd = new Command_wif_w(tr);
     cmd->request_cmd("wlan_ssid", "wlan_key", "auth_token");
     ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(true, cmd->get_answer_success());
+    ASSERT_EQ(false, cmd->get_answer_success());
 }
 
 TEST(SerialFakeTests, ssc_w_void_answer_test){

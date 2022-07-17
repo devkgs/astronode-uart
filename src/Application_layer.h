@@ -58,7 +58,7 @@ private:
     std::vector<uint8_t> decoded_answer_parameters_;
     uint8_t decoded_answer_command_id_;
     std::vector<uint8_t> decoded_answer_checksum_;
-    uint8_t decoded_answer_error_code_;
+    uint8_t transport_layer_error_;
 };
 
 class Command_cfg_w : public Application_layer{

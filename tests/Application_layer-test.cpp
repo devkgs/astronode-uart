@@ -4,16 +4,6 @@
 #include "Application_layer.h"
 #include "Transport_layer.h"
 
-
-/**
- * TODO
- * assert answer ID (for ex rtc_ra is 0x97)
- * geo write not done
- *
- *
- */
-
-
 using ::testing::Return;
 using ::testing::Return;
 using ::testing::Exactly;
@@ -46,28 +36,28 @@ TEST(CommandTest, get_answer_success_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t expected_ans;
-    expected_ans.error_code = Transport_layer::NO_ERROR;
-    expected_ans.answer_id = 0x95;
+    Transport_layer::answer_t mock_ans;
+    mock_ans.error_code = Transport_layer::NO_ERROR;
+    mock_ans.answer_id = 0x95;
     std::vector<uint8_t> data = {0x15};
 
     // request_cmd not called, return false
     ASSERT_EQ(false, cmd->get_answer_success());
 
     // error code = NO_ERROR
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(true, cmd->get_answer_success());
 
     // error code = ERROR
-    expected_ans.error_code = Transport_layer::OPEN_PORT_FAILURE;
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce((Return(expected_ans)));
+    mock_ans.error_code = Transport_layer::OPEN_PORT_FAILURE;
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce((Return(mock_ans)));
     cmd->request_cmd(data);
     ASSERT_EQ(false, cmd->get_answer_success());
 
     // terminal answer with error
-    expected_ans.answer_id = 0xff;
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    mock_ans.answer_id = 0xff;
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(false, cmd->get_answer_success());
 
@@ -79,10 +69,10 @@ TEST(CommandTest, get_answer_error_code_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t expected_ans;
-    expected_ans.error_code = Transport_layer::NO_ERROR;
-    expected_ans.answer_id = 0x85;
-    expected_ans.answer_parameters = {0};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.error_code = Transport_layer::NO_ERROR;
+    mock_ans.answer_id = 0x85;
+    mock_ans.answer_parameters = {0};
 
     std::vector<uint8_t> data = {0x15};
 
@@ -90,35 +80,56 @@ TEST(CommandTest, get_answer_error_code_test){
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 
     // no error
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 
     // weird case, answer_id says error, but param says no error
-    expected_ans.answer_id = 0xff;
-    expected_ans.answer_parameters = {0x0, 0x0};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    mock_ans.answer_id = 0xff;
+    mock_ans.answer_parameters = {0x0, 0x0};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 
     // error code crc not valid
-    expected_ans.answer_id = 0xff;
-    expected_ans.answer_parameters = {0x0, 0x1};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    mock_ans.answer_id = 0xff;
+    mock_ans.answer_parameters = {0x0, 0x1};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_CRC_NOT_VALID, cmd->get_answer_error_code());
 
     // not all error codes are tested
 
     // error code no clear
-    expected_ans.answer_id = 0xff;
-    expected_ans.answer_parameters = {0x46, 0x01};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    mock_ans.answer_id = 0xff;
+    mock_ans.answer_parameters = {0x46, 0x01};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_CLEAR, cmd->get_answer_error_code());
 }
 
 TEST(CommandTest, get_serial_port_error_code_test){
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Application_layer(tr);
+
+    // call request_command first to save locally the result
+    Transport_layer::answer_t mock_ans;
+    mock_ans.error_code = Transport_layer::NO_ERROR;
+    mock_ans.answer_id = 0x85;
+    mock_ans.answer_parameters = {0};
+
+    std::vector<uint8_t> data = {0x15};
+
+    // no error
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
+
+    // error
+    mock_ans.error_code = Transport_layer::TIMEOUT_ERROR;
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd(data);
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::TIMEOUT_ERROR, cmd->get_serial_port_error_code());
 }
 
 TEST(CommandTest, get_answer_parameters_test){
@@ -127,13 +138,13 @@ TEST(CommandTest, get_answer_parameters_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t expected_ans;
-    expected_ans.answer_parameters = {0x12, 0x34};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x12, 0x34};
     std::vector<uint8_t> data = {0x15};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
 
-    ASSERT_EQ(expected_ans.answer_parameters, cmd->get_answer_parameters());
+    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
     delete cmd;
 }
 
@@ -214,15 +225,15 @@ TEST(CommandTest, rtc_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
-    Transport_layer::answer_t expected_ans;
-    expected_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
 
 //    EXPECT_CALL(*tr, get_answer_success()).Times(1).WillOnce(Return(true));
 //    ASSERT_TRUE(cmd->get_answer_success());
 
-    ASSERT_EQ(expected_ans.answer_parameters, cmd->get_answer_parameters());
+    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
 
     // TODO add get_rtc_time method test
 
@@ -233,12 +244,12 @@ TEST(CommandTest, nco_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_nco_r(tr);
     std::vector<uint8_t> data = {0x18};
-    Transport_layer::answer_t expected_ans;
-    expected_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
 
-    ASSERT_EQ(expected_ans.answer_parameters, cmd->get_answer_parameters());
+    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
 
     // TODO add get_time_to_next_pass method test
 

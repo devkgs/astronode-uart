@@ -4,29 +4,7 @@
 
 #include "Transport_layer.h"
 #include "Application_layer.h"
-/*
- * TODO
- *
- * in application_layer-test, rename expected_ans, because it's not the expected ans but the sent command
- * use a thread for the serial communication
- * use opcode_id.h to store the error codes
- * application_layer.request_cmd should return the transport_layer return value
- * get_answer_error_code, compute error codes and return the right value
- * application_layer, create a method to return the error code from the answer parameters.
- * SimpleSerialFake.h: catch each opcode to return a specific answer
- * SimpleSerial.h: clean code
- * create a fake serial, which can be build to avoid using the hardware for development purpose
- *
- * git sub repo for googletest
- *  * ---general----
- * clang for code formating
- * serial port (win32, termios, (boost))
- * select which serial port driver (win32, termios, boost) to use with cmake
- * port in arguments
- *
- * Improvements:
- * refactor answer_t into an object. Move decoding and parsing method into this object.
- */
+
 
 using namespace std;
 
