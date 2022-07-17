@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "Transport_layer.h"
+#include "Opcodes_id.h"
 
 class Application_layer{
 public:
@@ -33,16 +34,6 @@ public:
         ASTRONODE_ERR_CODE_NO_ACK               = 0x4501,
         ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
     } astronode_error_code_t;
-
-    typedef enum serial_port_error_code
-    {
-        NO_ERROR                = 0,
-        OPEN_PORT_FAILURE       = 1,
-        TIMEOUT_ERROR           = 2,
-        CRC_ERROR               = 3,
-        NO_VALUE_ERROR          = 4,
-        NO_REQUEST_SENT         = 5
-    }serial_port_error_code_t;
 
     Application_layer(std::shared_ptr<Transport_layer> tr);
     virtual void request_cmd(const std::vector<uint8_t> command);

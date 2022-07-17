@@ -48,11 +48,11 @@ Application_layer::astronode_error_code Application_layer::get_answer_error_code
     }
 }
 
-Application_layer::serial_port_error_code_t Application_layer::get_serial_port_error_code(){
+serial_port_error_code_t Application_layer::get_serial_port_error_code(){
     if(request_sent_ == false){
-        return Application_layer::serial_port_error_code_t::NO_REQUEST_SENT;
+        return serial_port_error_code_t::NO_REQUEST_SENT;
     }
-    return static_cast<Application_layer::serial_port_error_code> (transport_layer_error_);
+    return static_cast<serial_port_error_code> (transport_layer_error_);
 }
 
 void Command_cfg_w::request_cmd(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){

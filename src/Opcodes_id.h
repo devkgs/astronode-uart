@@ -64,5 +64,14 @@ typedef enum astronode_op_code
     ASTRONODE_OP_CODE_CMD_RR = 0x47,
 } astronode_op_code;
 
+typedef enum serial_port_error_code
+{
+    NO_ERROR                = 0,
+    OPEN_PORT_FAILURE       = 1,
+    TIMEOUT_ERROR           = 2,
+    CRC_ERROR               = 3,
+    NO_VALUE_ERROR          = 4,
+    NO_REQUEST_SENT         = 5
+}serial_port_error_code_t;
 
 #endif //ASTROUART_OPCODES_ID_H
