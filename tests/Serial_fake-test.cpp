@@ -10,7 +10,7 @@ TEST(SerialFakeTests, cfg_w_test){
     auto cmd = new Command_cfg_w(tr);
     cmd->request_cmd(1, 1, 0, 0, 1, 1);
     ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(true, cmd->get_answer_success());
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
 }
 
 TEST(SerialFakeTests, wif_w_test){
@@ -19,7 +19,7 @@ TEST(SerialFakeTests, wif_w_test){
     auto cmd = new Command_wif_w(tr);
     cmd->request_cmd("wlan_ssid", "wlan_key", "auth_token");
     ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(false, cmd->get_answer_success());
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
 }
 
 TEST(SerialFakeTests, ssc_w_void_answer_test){
@@ -28,7 +28,7 @@ TEST(SerialFakeTests, ssc_w_void_answer_test){
     auto cmd = new Command_ssc_w(tr);
     cmd->request_cmd(0, 0);
  //   ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(false, cmd->get_answer_success());
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
 //    ASSERT_EQ(Transport_layer::serial_error_code_t::NO_VALUE_ERROR, cmd->get_answer_error_code());
 }
 

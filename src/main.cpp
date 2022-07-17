@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>(argv[1]);
     auto cmd = new Command_cfg_r(tr);
     cmd->request_cmd();
-    std::cout<<"success: "<<cmd->get_answer_success()<<std::endl;
 //   cmd->get_answer_parameters();
 
     return 0;

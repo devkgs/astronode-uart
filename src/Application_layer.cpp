@@ -24,25 +24,6 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
     request_sent_ = true;
 }
 
-bool Application_layer::get_answer_success() {
-    if(request_sent_ == false){
-        std::cout << "request was not sent" <<std::endl;
-        return false;
-    }
-
-    // check transport layer error code
-    if(transport_layer_error_ != Transport_layer::NO_ERROR){
-        return false;
-    }
-
-    // check error id
-    if((command_id_sent_ + 0x80) != decoded_answer_command_id_){
-        return false;
-    }
-
-    return true;
-}
-
 std::vector<uint8_t> Application_layer::get_answer_parameters(void){
     if(request_sent_ == false){
         std::cout << "request was not sent" << std::endl;
@@ -68,6 +49,9 @@ Application_layer::astronode_error_code Application_layer::get_answer_error_code
 }
 
 Application_layer::serial_port_error_code_t Application_layer::get_serial_port_error_code(){
+    if(request_sent_ == false){
+        return Application_layer::serial_port_error_code_t::NO_REQUEST_SENT;
+    }
     return static_cast<Application_layer::serial_port_error_code> (transport_layer_error_);
 }
 

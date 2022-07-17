@@ -26,7 +26,8 @@ public:
         OPEN_PORT_FAILURE       = 1,
         TIMEOUT_ERROR           = 2,
         CRC_ERROR               = 3,
-        NO_VALUE_ERROR          = 4
+        NO_VALUE_ERROR          = 4,
+        NO_REQUEST_SENT         = 5
     }serial_error_code_t;
 
     virtual answer_t request_command(const std::vector<uint8_t> command);

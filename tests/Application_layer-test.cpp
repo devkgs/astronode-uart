@@ -31,39 +31,6 @@ TEST(CommandTest, request_cmd_test){
     delete cmd;
 }
 
-TEST(CommandTest, get_answer_success_test){
-    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
-    auto cmd = new Application_layer(tr);
-
-    // call request_command first to save locally the result
-    Transport_layer::answer_t mock_ans;
-    mock_ans.error_code = Transport_layer::NO_ERROR;
-    mock_ans.answer_id = 0x95;
-    std::vector<uint8_t> data = {0x15};
-
-    // request_cmd not called, return false
-    ASSERT_EQ(false, cmd->get_answer_success());
-
-    // error code = NO_ERROR
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
-    cmd->request_cmd(data);
-    ASSERT_EQ(true, cmd->get_answer_success());
-
-    // error code = ERROR
-    mock_ans.error_code = Transport_layer::OPEN_PORT_FAILURE;
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce((Return(mock_ans)));
-    cmd->request_cmd(data);
-    ASSERT_EQ(false, cmd->get_answer_success());
-
-    // terminal answer with error
-    mock_ans.answer_id = 0xff;
-    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
-    cmd->request_cmd(data);
-    ASSERT_EQ(false, cmd->get_answer_success());
-
-    delete cmd;
-}
-
 TEST(CommandTest, get_answer_error_code_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Application_layer(tr);
@@ -115,10 +82,13 @@ TEST(CommandTest, get_serial_port_error_code_test){
     // call request_command first to save locally the result
     Transport_layer::answer_t mock_ans;
     mock_ans.error_code = Transport_layer::NO_ERROR;
-    mock_ans.answer_id = 0x85;
+    mock_ans.answer_id = 0x95;
     mock_ans.answer_parameters = {0};
 
     std::vector<uint8_t> data = {0x15};
+
+    // request_cmd not called, return false
+    ASSERT_EQ(Application_layer::serial_port_error_code_t::NO_REQUEST_SENT, cmd->get_serial_port_error_code());
 
     // no error
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));

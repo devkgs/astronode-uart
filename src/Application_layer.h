@@ -40,12 +40,12 @@ public:
         OPEN_PORT_FAILURE       = 1,
         TIMEOUT_ERROR           = 2,
         CRC_ERROR               = 3,
-        NO_VALUE_ERROR          = 4
+        NO_VALUE_ERROR          = 4,
+        NO_REQUEST_SENT         = 5
     }serial_port_error_code_t;
 
     Application_layer(std::shared_ptr<Transport_layer> tr);
     virtual void request_cmd(const std::vector<uint8_t> command);
-    virtual bool get_answer_success();
     virtual astronode_error_code get_answer_error_code();
     virtual serial_port_error_code get_serial_port_error_code();
     virtual std::vector<uint8_t> get_answer_parameters(void);
