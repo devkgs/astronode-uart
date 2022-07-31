@@ -107,55 +107,69 @@ void Command_cfg_r::request_cmd(void) {
 //}
 
 uint8_t Command_cfg_r::get_product_id(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(0);
+//    throw "myFunction is not implemented yet.";
 }
 
 uint8_t Command_cfg_r::get_hardware_revision(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(1);
 }
 
 uint8_t Command_cfg_r::get_firmware_major_version(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(2);
 }
 
 uint8_t Command_cfg_r::get_firmware_minor_version(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(3);
 }
 
 uint8_t Command_cfg_r::get_firmware_revision(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(4);
 }
 
 bool Command_cfg_r::get_payload_ack(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(5) & 1;
 }
 
 bool Command_cfg_r::get_add_geolocation(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(5) & 2;
 }
 
 bool Command_cfg_r::get_ephemeris_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(5) & 4;
 }
 
 bool Command_cfg_r::get_deep_sleep_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(5) & 8;
 }
 
 bool Command_cfg_r::get_payload_ack_evt_pin_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(7) & 1;
 }
 
 bool Command_cfg_r::get_reset_notification_evt_pin_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(7) & 2;
 }
 
 bool Command_cfg_r::get_command_available_evt_pin_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(7) & 4;
 }
 
 bool Command_cfg_r::get_message_transmission_pending_evt_pin_enabled(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    return  ans_v.at(7) & 8;
 }
 
 void Command_rtc_r::request_cmd(void) {
@@ -225,7 +239,7 @@ void Command_pld_e::request_cmd(uint16_t payload_id, const std::string payload_d
 uint16_t Command_pld_e::get_command_id(void) {
     // ex.  {0x03, 0xE9} = 0x03E9 = 1001
     std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
-    return  (ans_v.at(0) << 8) + ans_v.at(1);;
+    return  (ans_v.at(0) << 8) + ans_v.at(1);
 }
 
 void Command_pld_d::request_cmd(void){

@@ -186,10 +186,291 @@ TEST(CommandTest, cfg_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    EXPECT_CALL(*tr, request_command(data)).Times(1);
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
+    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
+
     delete cmd;
 }
+
+TEST(CommandTest, cfg_r_get_product_id_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(0x03, cmd->get_product_id());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_hardware_revision_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(0x01, cmd->get_hardware_revision());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_firmware_major_version_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(0x02, cmd->get_firmware_major_version());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_firmware_minor_version_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(0x01, cmd->get_firmware_minor_version());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_firmware_revision_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(0x00, cmd->get_firmware_revision());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_payload_ack_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // payload ack is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x01, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_payload_ack());
+
+    // payload ack is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_payload_ack());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_add_geolocation_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // add geolocation is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x02, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_add_geolocation());
+
+    // add geolocation is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_add_geolocation());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_ephemeris_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // ephemeris enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x04, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_ephemeris_enabled());
+
+    // ephemeris enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_ephemeris_enabled());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_deep_sleep_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // deep sleep enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_deep_sleep_enabled());
+
+    // deep sleep enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_deep_sleep_enabled());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_payload_ack_evt_pin_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // payload ack evt pin enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x01};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_payload_ack_evt_pin_enabled());
+
+    // payload ack evt pin enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_payload_ack_evt_pin_enabled());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_reset_notification_evt_pin_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // reset notification evt pin enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x02};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_reset_notification_evt_pin_enabled());
+
+    // reset notification evt pin enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_reset_notification_evt_pin_enabled());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_command_available_evt_pin_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // command available evt pin enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x04};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_command_available_evt_pin_enabled());
+
+    // command available evt pin enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_command_available_evt_pin_enabled());
+
+    delete cmd;
+}
+
+TEST(CommandTest, cfg_r_get_message_transmission_pending_evt_pin_enabled_test) {
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_cfg_r(tr);
+    std::vector<uint8_t> data = {0x15};
+    Transport_layer::answer_t mock_ans;
+
+    // message transmission pending evt pin enabled is true
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x08};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(true, cmd->get_message_transmission_pending_evt_pin_enabled());
+
+    // message transmission pending evt pin enabled is false
+    mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
+    cmd->request_cmd();
+
+    ASSERT_EQ(false, cmd->get_message_transmission_pending_evt_pin_enabled());
+
+    delete cmd;
+}
+
 
 TEST(CommandTest, rtc_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
@@ -199,9 +480,6 @@ TEST(CommandTest, rtc_r_test){
     mock_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
-
-//    EXPECT_CALL(*tr, get_answer_success()).Times(1).WillOnce(Return(true));
-//    ASSERT_TRUE(cmd->get_answer_success());
 
     ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
 
