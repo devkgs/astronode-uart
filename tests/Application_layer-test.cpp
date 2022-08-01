@@ -596,7 +596,12 @@ TEST(CommandTest, pld_f_test){
 TEST(CommandTest, geo_w_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_geo_w(tr);
-    // TODO add geo write test
+
+    std::vector<uint8_t> data = {0x35,0xA8, 0x93, 0xBC, 0x1B, 0x4E, 0xD6, 0xEB, 0x03};
+
+    EXPECT_CALL(*tr, request_command(data)).Times(1);
+    cmd->request_cmd(465343400, 65787470);
+
     delete cmd;
 }
 

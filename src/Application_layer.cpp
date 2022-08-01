@@ -260,8 +260,19 @@ void Command_pld_f::request_cmd(void) {
     Application_layer::request_cmd(data);
 }
 
-void Command_geo_w::request_cmd(std::string lat, std::string lng) {
-    throw "myFunction is not implemented yet.";
+void Command_geo_w::request_cmd(int32_t lat, int32_t lng) {
+    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_GEO_WR};
+
+    for(int i = 0; i < 4; i++){
+        data.insert(data.end(), (uint8_t) (lat >> (i * 8)));
+    }
+
+    for(int i = 0; i < 4; i++){
+        data.insert(data.end(), (uint8_t) (lng >> (i * 8)));
+    }
+
+    Application_layer::request_cmd(data);
 }
 
 void Command_evt_r::request_cmd(void) {

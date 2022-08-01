@@ -163,7 +163,7 @@ public:
 class Command_geo_w : public Application_layer{
 public:
     Command_geo_w(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
-    void request_cmd(std::string lat, std::string lng); // ex: lat = "465343400" for 46.53434
+    void request_cmd(int32_t lat, int32_t lng); // ex: lat = 465343400 for 46.53434
 };
 
 class Command_evt_r : public Application_layer{
