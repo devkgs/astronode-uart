@@ -477,13 +477,11 @@ TEST(CommandTest, rtc_r_test){
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
     Transport_layer::answer_t mock_ans;
-    mock_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
+    mock_ans.answer_parameters = {0x00, 0x67, 0xC2, 0x03}; //{0x12, 0x34, 0x56, 0x78};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
 
-    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
-
-    // TODO add get_rtc_time method test
+    ASSERT_EQ(63072000, cmd->get_rtc_time());
 
     delete cmd;
 }

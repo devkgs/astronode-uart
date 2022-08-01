@@ -109,7 +109,6 @@ void Command_cfg_r::request_cmd(void) {
 uint8_t Command_cfg_r::get_product_id(void){
     std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
     return  ans_v.at(0);
-//    throw "myFunction is not implemented yet.";
 }
 
 uint8_t Command_cfg_r::get_hardware_revision(void){
@@ -184,8 +183,13 @@ void Command_rtc_r::request_cmd(void) {
 //}
 
 uint32_t Command_rtc_r::get_rtc_time(void) {
-    //std::vector<uint8_t> answer_data = Application_layer::get_answer_parameters();
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    uint32_t rtc_time = (uint32_t)ans_v.at(3) << 24;
+    rtc_time += (uint32_t)ans_v.at(2) << 16;
+    rtc_time += (uint32_t)ans_v.at(1) << 8;
+    rtc_time += (uint32_t)ans_v.at(0);
+
+    return rtc_time;
 }
 
 void Command_nco_r::request_cmd(void) {
