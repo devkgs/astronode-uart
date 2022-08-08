@@ -204,7 +204,13 @@ void Command_nco_r::request_cmd(void) {
 //}
 
 uint32_t Command_nco_r::get_time_to_next_pass(void){
-    throw "myFunction is not implemented yet.";
+    std::vector<uint8_t> ans_v = Application_layer::get_answer_parameters();
+    uint32_t next_pass = (uint32_t)ans_v.at(3) << 24;
+    next_pass += (uint32_t)ans_v.at(2) << 16;
+    next_pass += (uint32_t)ans_v.at(1) << 8;
+    next_pass += (uint32_t)ans_v.at(0);
+
+    return next_pass;
 }
 
 void Command_mgi_r::request_cmd(void) {

@@ -477,7 +477,7 @@ TEST(CommandTest, rtc_r_test){
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
     Transport_layer::answer_t mock_ans;
-    mock_ans.answer_parameters = {0x00, 0x67, 0xC2, 0x03}; //{0x12, 0x34, 0x56, 0x78};
+    mock_ans.answer_parameters = {0x00, 0x67, 0xC2, 0x03};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
 
@@ -491,13 +491,12 @@ TEST(CommandTest, nco_r_test){
     auto cmd = new Command_nco_r(tr);
     std::vector<uint8_t> data = {0x18};
     Transport_layer::answer_t mock_ans;
-    mock_ans.answer_parameters = {0x12, 0x34, 0x56, 0x78};
+    mock_ans.answer_parameters = {0xB4, 0x2D, 0x00, 0x00};
+
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
 
-    ASSERT_EQ(mock_ans.answer_parameters, cmd->get_answer_parameters());
-
-    // TODO add get_time_to_next_pass method test
+    ASSERT_EQ(11700, cmd->get_time_to_next_pass());
 
     delete cmd;
 }

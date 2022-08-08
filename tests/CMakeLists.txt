@@ -25,7 +25,7 @@ target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest gmock)
 set(BINARY Transport_layer_Test)
 file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false Transport_layer-test.cpp main.cpp)
 add_executable(${BINARY} ${TEST_SOURCES} Transport_layer-test.cpp)
-add_test(NAME Transport_Test COMMAND ${BINARY})
+add_test(NAME Transport_layer_Test COMMAND ${BINARY})
 target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest gmock)
 
 set(BINARY Transport_utils_Test)
