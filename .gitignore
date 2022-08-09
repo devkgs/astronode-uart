@@ -1,4 +1,5 @@
 /lib/googletest
+/lib
 /cmake-build-debug
 .idea
 .ssh

@@ -7,6 +7,7 @@ The astronode is a communication terminal from astrocast. <br>
 [Astrocast webite](http://www.astrocast.com) <br>
 [Serial command documentation](https://docs.astrocast.com/docs/products/astronode-api/commands-definition) <br>
 [Astronode device](https://www.astrocast.com/products/astronode-s-plus/) <br>
+[Astrocast github](https://github.com/orgs/Astrocast/repositories) 
 
 ## Dependencies
 The software currently runs only on Linux. <br>
