@@ -1,5 +1,5 @@
 /**
- * requires libasio-dev from libboost
+ *
  */
 
 #include "Transport_layer.h"
