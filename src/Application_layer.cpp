@@ -374,3 +374,16 @@ void Command_res_c::request_cmd(void) {
     std::vector<uint8_t> data = {ASTRONODE_OP_CODE_RES_CR};
     Application_layer::request_cmd(data);
 }
+
+void Command_val_w::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__  << std::endl;
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_VAL_WR};
+    Application_layer::request_cmd(data);
+}
+
+void Command_ttx_s::request_cmd(uint8_t transmit_duration_sec) {
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::vector<uint8_t> data = {ASTRONODE_OP_CODE_TTX_SR};
+    data.insert(data.end(), transmit_duration_sec);
+    Application_layer::request_cmd(data);
+}

@@ -62,6 +62,10 @@ typedef enum astronode_op_code
     ASTRONODE_OP_CODE_CMD_CR = 0x48,
     ASTRONODE_OP_CODE_CMD_RA = 0xc7,
     ASTRONODE_OP_CODE_CMD_RR = 0x47,
+    ASTRONODE_OP_CODE_VAL_WR = 0x60,
+    ASTRONODE_OP_CODE_VAL_WA = 0xe0,
+    ASTRONODE_OP_CODE_TTX_SR = 0x61,
+    ASTRONODE_OP_CODE_TTX_SA = 0xe1,
 } astronode_op_code;
 
 typedef enum serial_port_error_code

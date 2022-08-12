@@ -737,3 +737,23 @@ TEST(CommandTest, res_c_test){
 
     delete cmd;
 }
+
+TEST(CommandTest, val_w_test){
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_val_w(tr);
+    std::vector<uint8_t> data = {0x60};
+    EXPECT_CALL(*tr, request_command(data)).Times(1);
+    cmd->request_cmd();
+
+    delete cmd;
+}
+
+TEST(CommandTest, ttx_s_test){
+    std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
+    auto cmd = new Command_ttx_s(tr);
+    std::vector<uint8_t> data = {0x61, 123};
+    EXPECT_CALL(*tr, request_command(data)).Times(1);
+    cmd->request_cmd(123);
+
+    delete cmd;
+}

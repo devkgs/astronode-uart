@@ -208,3 +208,15 @@ public:
     Command_res_c(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
     void request_cmd(void);
 };
+
+class Command_val_w : public Application_layer{
+public:
+    Command_val_w(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};
+
+class Command_ttx_s : public Application_layer{
+public:
+    Command_ttx_s(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(uint8_t transmit_duration_sec);
+};
