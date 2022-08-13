@@ -16,6 +16,20 @@ The software currently runs only on Linux. <br>
 
 ## Build
 
+Debug build
+```
+cmake -DCMAKE_BUILD_TYPE=Debug -B cmake-build-debug
+cmake --build cmake-build-debug --target astroUart_run
+```
+
+Fake serial build
+```
+cmake -DCMAKE_BUILD_TYPE=Release -DFAKE_SERIAL_BUILD=1 -B cmake-build-serial_fake
+cmake --build cmake-build-serial_fake --target astroUart_fake_serial
+```
 
 ## Run
+example: 
+./astroUart_run /dev/ttyUSB3
 
+## Test
