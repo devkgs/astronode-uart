@@ -73,6 +73,8 @@ TEST(CommandTest, get_answer_error_code_test){
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_NO_CLEAR, cmd->get_answer_error_code());
+
+    delete cmd;
 }
 
 TEST(CommandTest, get_serial_port_error_code_test){
@@ -100,6 +102,8 @@ TEST(CommandTest, get_serial_port_error_code_test){
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
     ASSERT_EQ(serial_port_error_code_t::TIMEOUT_ERROR, cmd->get_serial_port_error_code());
+
+    delete cmd;
 }
 
 TEST(CommandTest, get_answer_parameters_test){
