@@ -3,7 +3,7 @@
 #include "Transport_utils.h"
 #include "Opcodes_id.h"
 
-Serial_fake::Serial_fake(std::string port, unsigned int baud_rate){
+Serial_fake::Serial_fake(__attribute__((unused)) std::string port, __attribute__((unused)) unsigned int baud_rate){
     std::cout<<"Serial fake constructor"<<std::endl;
 }
 

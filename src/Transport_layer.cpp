@@ -1,5 +1,9 @@
 #include <memory>
 #include <sstream>
+#include <chrono>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 #include "Serial_hardware/SimpleSerial.h"
 #include "Serial_fake/Serial_fake.h"
@@ -27,7 +31,7 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
         std::cout << "Transport::readline" << std::endl;
 
         //read answer
-        return serial.readLine();
+        return serial.readLine();   // TODO add timeout here
     }
     catch(boost::system::system_error& e)
     {

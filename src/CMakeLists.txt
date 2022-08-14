@@ -13,6 +13,8 @@ set(SOURCES ${SOURCES})
 
 #add_executable(${BINARY}_run ${SOURCES})
 
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
 #fake serial build
 if (FAKE_SERIAL_BUILD STREQUAL 1)
     add_definitions(-DFAKE_SERIAL)
@@ -29,6 +31,7 @@ else()
     target_link_libraries(${BINARY}_run ${Boost_LIBRARIES})
     find_package(Threads REQUIRED)
     target_link_libraries(${BINARY}_run ${CMAKE_THREAD_LIBS_INIT})
+
 endif()
 
 
