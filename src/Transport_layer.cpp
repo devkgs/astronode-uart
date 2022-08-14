@@ -1,9 +1,7 @@
-#include <memory>
 #include <sstream>
 #include <chrono>
 #include <thread>
-#include <mutex>
-#include <condition_variable>
+#include <future>
 
 #include "Serial_hardware/SimpleSerial.h"
 #include "Serial_fake/Serial_fake.h"
@@ -30,8 +28,21 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
         serial.writeString(str);
         std::cout << "Transport::readline" << std::endl;
 
-        //read answer
-        return serial.readLine();   // TODO add timeout here
+        // Lambda calling async readLine (threaded).
+        std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
+            return serial.readLine();
+        });
+
+        std::future_status status = future.wait_for(std::chrono::seconds(1));
+        switch(status) {
+           // case std::future_status::deferred: std::cout << "deferred\n"; break;
+            case std::future_status::timeout: std::cout << "timeout\n"; break;
+           // case std::future_status::ready: std::cout << "ready!\n"; break;
+            default:
+                break;
+        }   // TODO catch if timeout was raised, do something with it.
+
+        return future.get();
     }
     catch(boost::system::system_error& e)
     {
