@@ -387,3 +387,41 @@ void Command_ttx_s::request_cmd(uint8_t transmit_duration_sec) {
     data.insert(data.end(), transmit_duration_sec);
     Application_layer::request_cmd(data);
 }
+
+void Command_manufacturing_asic_power_on::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::vector<uint8_t> data = {0x04};
+    data.insert(data.end(), 0x20); //asic power on cmd
+
+    Application_layer::request_cmd(data);
+}
+
+void Command_manufacturing_tx_continuous::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+    std::vector<uint8_t> data = {0x04};
+    data.insert(data.end(), 0x2b);  // continuous cmd sub-opcode
+
+    // TX freq
+    uint32_t tx_freq = 0x614C8608;
+    for(int i = 0; i < 4; i++){
+        data.insert(data.end(), (uint8_t) (tx_freq >> (i * 8)));
+    }
+
+    // Time
+    uint32_t time_ms = 3000;
+    for(int i = 0; i < 4; i++){
+        data.insert(data.end(), (uint8_t) (time_ms >> (i * 8)));
+    }
+
+    // TX power
+    data.insert(data.end(), 127);
+
+    // Modulated/unmodulated
+    data.insert(data.end(), 0);
+
+    // Disable tx compensation
+    data.insert(data.end(), 0);
+
+    Application_layer::request_cmd(data);
+
+}

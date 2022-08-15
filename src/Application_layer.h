@@ -220,3 +220,15 @@ public:
     Command_ttx_s(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
     void request_cmd(uint8_t transmit_duration_sec);
 };
+
+class Command_manufacturing_asic_power_on : public Application_layer{
+public:
+    Command_manufacturing_asic_power_on(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};
+
+class Command_manufacturing_tx_continuous : public Application_layer{
+public:
+    Command_manufacturing_tx_continuous(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};
