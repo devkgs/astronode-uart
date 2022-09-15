@@ -232,3 +232,16 @@ public:
     Command_manufacturing_tx_continuous(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
     void request_cmd(void);
 };
+
+class Command_homologation_auto_tx : public Application_layer{
+public:
+    Command_homologation_auto_tx(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};
+
+class Command_homologation_stop_auto_tx : public Application_layer{
+public:
+    Command_homologation_stop_auto_tx(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};
+

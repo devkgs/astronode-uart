@@ -3,6 +3,8 @@
 
 typedef enum astronode_op_code
 {
+    ASTRONODE_OP_CODE_ADC_RA = 0xe4,
+    ASTRONODE_OP_CODE_ADC_RR = 0x64,
     ASTRONODE_OP_CODE_CFG_FA = 0x91,
     ASTRONODE_OP_CODE_CFG_FR = 0x11,
     ASTRONODE_OP_CODE_CFG_RA = 0x95,
@@ -66,7 +68,33 @@ typedef enum astronode_op_code
     ASTRONODE_OP_CODE_VAL_WA = 0xe0,
     ASTRONODE_OP_CODE_TTX_SR = 0x61,
     ASTRONODE_OP_CODE_TTX_SA = 0xe1,
+
+    AI_OPCODE_DEBUG  = 0x01,
 } astronode_op_code;
+
+typedef enum debug_sub_opcodes
+{
+    DEBUG_OPCODE_SET_SYS_TIME          = 0x01,
+    DEBUG_OPCODE_SHIFT_MONO_COUNTER    = 0x03,
+    DEBUG_OPCODE_GET_MONO_COUNTER      = 0x04,
+    DEBUG_OPCODE_SET_EPHEMERIS         = 0x05,
+    DEBUG_OPCODE_GET_EPHEMERIS         = 0x06,
+    DEBUG_OPCODE_SET_LAST_SYNC_MONO    = 0x07,
+    DEBUG_OPCODE_GET_LAST_SYNC_MONO    = 0x08,
+    DEBUG_OPCODE_GET_ALARM_MONO        = 0x09,
+    DEBUG_OPCODE_SET_POLLING_PERIOD    = 0x0A,
+    DEBUG_OPCODE_SET_SAT_SEARCH_PERIOD = 0x0B,
+    DEBUG_OPCODE_ENA_TEST_SAT          = 0x0C,
+    DEBUG_OPCODE_ENA_SECURITY_CHECKS   = 0x0D,
+    DEBUG_OPCODE_FAKE_HMAC_FAILURE     = 0x0E,
+    DEBUG_OPCODE_SET_RX_SEARCH_FREQS   = 0x0F,
+    DEBUG_OPCODE_RESET                 = 0x10,
+    DEBUG_OPCODE_SET_PRIO              = 0x11,
+    DEBUG_OPCODE_SKIP_SAT_ACKS         = 0x12,
+    DEBUG_OPCODE_READ_EEPROM           = 0x13,
+    DEBUG_OPCODE_SET_EEPROM            = 0x14,
+    DEBUG_OPCODE_DISABLE_RETRY_RAND    = 0x15,
+}debug_sub_opcodes;
 
 typedef enum serial_port_error_code
 {

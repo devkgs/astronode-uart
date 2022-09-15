@@ -28,6 +28,8 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
         serial.writeString(str);
         std::cout << "Transport::readline" << std::endl;
 
+        return serial.readLine();
+        /*
         // Lambda calling async readLine (threaded).
         std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
             return serial.readLine();
@@ -42,7 +44,7 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
                 break;
         }   // TODO catch if timeout was raised, do something with it.
 
-        return future.get();
+        return future.get();*/
     }
     catch(boost::system::system_error& e)
     {

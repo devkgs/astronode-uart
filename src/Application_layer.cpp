@@ -425,3 +425,20 @@ void Command_manufacturing_tx_continuous::request_cmd(void) {
     Application_layer::request_cmd(data);
 
 }
+
+void Command_homologation_auto_tx::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+    std::vector<uint8_t> data = {0x03};
+    data.insert(data.end(), 1); // start auto tx
+    data.insert(data.end(), 2); // freq
+    Application_layer::request_cmd(data);
+}
+
+
+void Command_homologation_stop_auto_tx::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+    std::vector<uint8_t> data = {0x03};
+    data.insert(data.end(), 2); // start auto tx
+    Application_layer::request_cmd(data);
+}
+
