@@ -15,8 +15,12 @@ public:
 
 TEST(TransportTest, request_command_test){
     Transport_layer tr("port");
-    std::vector<uint8_t> v;
-    tr.request_command(v);
+    std::vector<uint8_t> command = {0x05, 0x03, 0x0, 0x03};
+    Transport_layer::answer_t ans = tr.request_command(command);
+
+   // ASSERT_EQ(, ans.error_code);
+
+
 }
 
 // TODO test all methods and error returns

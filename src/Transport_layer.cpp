@@ -12,7 +12,7 @@ Transport_layer::Transport_layer(const std::string port) {
     port_ = port;
 }
 
-std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command){
+std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command, std::vector<uint8_t> * answer){
     //open port
     std::cout << "Open port : " << port_ << std::endl;
     try {
@@ -51,11 +51,13 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
         std::cout<<"Error: "<<e.what()<<std::endl;
         return command;
     }
+    answer->push_back(1);
 }
 
 Transport_layer::answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
-    std::vector<uint8_t> answer = Transport_layer::request_serial(encoded);
+    std::vector<uint8_t> answw;
+    std::vector<uint8_t> answer = Transport_layer::request_serial(encoded, &answw);
     // TODO check that answer size is > 6 (ID + checksum)
     struct answer_t ans;
     if(answer.size() < 6){

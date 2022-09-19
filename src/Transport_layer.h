@@ -22,7 +22,7 @@ public:
     };
 
     virtual answer_t request_command(const std::vector<uint8_t> command);
-    std::vector<uint8_t> request_serial(const std::vector<uint8_t> command);
+    std::vector<uint8_t> request_serial(const std::vector<uint8_t> command, std::vector<uint8_t> * answer);
 private:
 
     std::string port_;
