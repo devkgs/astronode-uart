@@ -25,7 +25,10 @@ int main(int argc, char* argv[])
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>(argv[1]);
     auto cmd = new Command_cfg_r(tr);
     cmd->request_cmd();
-//   cmd->get_answer_parameters();
+
+    auto enable_validation_mode_cmd = new Command_val_w(tr);
+    enable_validation_mode_cmd->request_cmd();
+
     delete cmd;
     return 0;
 }

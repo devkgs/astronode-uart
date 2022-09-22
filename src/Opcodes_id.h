@@ -68,7 +68,6 @@ typedef enum astronode_op_code
     ASTRONODE_OP_CODE_VAL_WA = 0xe0,
     ASTRONODE_OP_CODE_TTX_SR = 0x61,
     ASTRONODE_OP_CODE_TTX_SA = 0xe1,
-
     AI_OPCODE_DEBUG  = 0x01,
 } astronode_op_code;
 
