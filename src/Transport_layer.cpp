@@ -29,9 +29,10 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
         std::cout << "Transport::readline" << std::endl;
 
         return serial.readLine();
-        /*
+
         // Lambda calling async readLine (threaded).
-        std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
+        /*std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
+            std::cout<<"futur function"<<std::endl;
             return serial.readLine();
         });
 

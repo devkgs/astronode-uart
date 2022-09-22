@@ -23,11 +23,12 @@ int main(int argc, char* argv[])
 
     std::cout<<"==================================================="<<std::endl;
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>(argv[1]);
-    auto cmd = new Command_cfg_r(tr);
+//    auto cmd = new Command_cfg_r(tr);
+    auto cmd = new Command_cfg_r(tr);//Command_unknown(tr);
     cmd->request_cmd();
 
-    auto enable_validation_mode_cmd = new Command_val_w(tr);
-    enable_validation_mode_cmd->request_cmd();
+    //auto enable_validation_mode_cmd = new Command_val_w(tr);
+   // enable_validation_mode_cmd->request_cmd();
 
     delete cmd;
     return 0;

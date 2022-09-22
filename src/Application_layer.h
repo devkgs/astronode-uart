@@ -245,3 +245,8 @@ public:
     void request_cmd(void);
 };
 
+class Command_unknown : public Application_layer{
+public:
+    Command_unknown(std::shared_ptr<Transport_layer> tr) : Application_layer(tr){}
+    void request_cmd(void);
+};

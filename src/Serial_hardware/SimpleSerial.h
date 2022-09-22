@@ -79,7 +79,7 @@ public:
     using namespace boost;
     char c;
     std::vector<uint8_t> result;
-    std::cout<<"received: ";
+    std::cout<<"received (hex): ";
     for(;;)
     {
 
