@@ -434,14 +434,26 @@ void Command_homologation_auto_tx::request_cmd(void) {
     Application_layer::request_cmd(data);
 }
 
-
 void Command_homologation_stop_auto_tx::request_cmd(void) {
     std::cout << __PRETTY_FUNCTION__ <<std::endl;
     std::vector<uint8_t> data = {0x03};
-    data.insert(data.end(), 2); // start auto tx
+    data.insert(data.end(), 4); // start auto tx
     Application_layer::request_cmd(data);
 }
 
+void Command_homologation_start_duty_cycle_mode::request_cmd(void) {
+    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+    std::vector<uint8_t> data = {0x03};
+    data.insert(data.end(), 2); // start duty cycle mode
+    Application_layer::request_cmd(data);
+}
+
+//void Command_homologation_stop_duty_cycle_mode::request_cmd(void) {
+//    std::cout << __PRETTY_FUNCTION__ <<std::endl;
+//    std::vector<uint8_t> data = {0x03};
+//    data.insert(data.end(), 2); // stop duty cycle mode
+//    Application_layer::request_cmd(data);
+//}
 
 
 void Command_unknown::request_cmd(void) {
