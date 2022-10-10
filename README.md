@@ -32,4 +32,17 @@ cmake --build cmake-build-serial_fake --target astroUart_fake_serial
 example: 
 ./astroUart_run /dev/ttyUSB3
 
+## Some commands are still not implemented 
+GPO_S
+GPI_R
+ADC_R
+CTX_S
+PER_R
+PER_C
+MST_T
+LCD_R
+END_R
+HTX_S
+
 ## Test
+Tests requires fake serial build.

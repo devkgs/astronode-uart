@@ -20,7 +20,9 @@ TEST(TransportTest, request_command_test){
 
    // ASSERT_EQ(, ans.error_code);
 
+}
+
+TEST(TransportTest, request_serial_test){
 
 }
 
-// TODO test all methods and error returns

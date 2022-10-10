@@ -24,9 +24,16 @@ void Serial_fake::writeString(std::string request) {
         case ASTRONODE_OP_CODE_CFG_RR:
             answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_CFG_RA, 1, 2, 3, 4, 5, 6, 7, 8});
             break;
+        case ASTRONODE_OP_CODE_WIF_WR:
+            answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_WIF_WA});
+            break;
+        case ASTRONODE_OP_CODE_SSC_WR:
+            answer_ = Transport_utils::encode({ASTRONODE_OP_CODE_SSC_WA});
+            break;
         // TODO cases for all opcodes
         default:
             //answer_id += 0x80;
+            std::cout<<"error unknown opcode: 0x"  << command_id <<std::endl;
             answer_ = Transport_utils::encode({0xff/*answer_id*/});    //TODO add error code
             break;
     }
