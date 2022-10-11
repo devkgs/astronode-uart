@@ -4,6 +4,7 @@
 #include "Application_layer.h"
 //#include "Transport_layer.h"
 
+
 TEST(SerialFakeTests, cfg_w_test){
     std::vector<uint8_t> expected_ans = {};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
@@ -11,6 +12,17 @@ TEST(SerialFakeTests, cfg_w_test){
     cmd->request_cmd(1, 1, 0, 0, 1, 1);
     ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
     ASSERT_EQ(serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+}
+
+TEST(SerialFakeTests, cfg_r_test){
+    std::vector<uint8_t> expected_ans = {1, 2, 3, 4, 5, 6, 7, 8};
+    std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
+    auto cmd = new Command_cfg_r(tr);
+    cmd->request_cmd();
+    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
+    ASSERT_EQ(serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 }
 
 TEST(SerialFakeTests, wif_w_test){
@@ -20,6 +32,7 @@ TEST(SerialFakeTests, wif_w_test){
     cmd->request_cmd("wlan_ssid", "wlan_key", "auth_token");
     ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
     ASSERT_EQ(serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 }
 
 TEST(SerialFakeTests, ssc_w_void_answer_test){
@@ -27,12 +40,11 @@ TEST(SerialFakeTests, ssc_w_void_answer_test){
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
     auto cmd = new Command_ssc_w(tr);
     cmd->request_cmd(0, 0);
- //   ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
+    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
     ASSERT_EQ(serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
-//    ASSERT_EQ(Transport_layer::serial_error_code_t::NO_VALUE_ERROR, cmd->get_answer_error_code());
+    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
 }
 
-// TODO test ssc_w fake
 // TODO test cfg_s fake
 // TODO test cfg_f fake
 // TODO test cfg_r fake
