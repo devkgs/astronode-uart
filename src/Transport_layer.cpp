@@ -7,6 +7,7 @@
 #include "Serial_fake/Serial_fake.h"
 #include "Transport_layer.h"
 #include "Transport_utils.h"
+#include "Serial_port.h"
 
 Transport_layer::Transport_layer(const std::string port) {
     port_ = port;
