@@ -38,7 +38,7 @@ public:
     Application_layer(std::shared_ptr<Transport_layer> tr);
     virtual void request_cmd(const std::vector<uint8_t> command);
     virtual astronode_error_code get_answer_error_code();
-    virtual serial_port_error_code get_serial_port_error_code();
+    virtual Transport_layer::serial_port_error_code get_serial_port_error_code();
     virtual std::vector<uint8_t> get_answer_parameters(void);
     virtual ~Application_layer() {};//= default;
     std::shared_ptr<Transport_layer> tr_;

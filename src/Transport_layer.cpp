@@ -13,23 +13,19 @@ Transport_layer::Transport_layer(const std::string port) {
     port_ = port;
 }
 
-std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> command, std::vector<uint8_t> * answer){
+std::vector<uint8_t> Transport_layer::request_serial(Serial_port* sp, const std::vector<uint8_t> command, std::vector<uint8_t> * answer){
     //open port
     std::cout << "Open port : " << port_ << std::endl;
+
     try {
-#ifdef FAKE_SERIAL
-        Serial_fake serial(port_, BAUDRATE);
-#else
-        SimpleSerial serial(port_, BAUDRATE);
-#endif
         //convert to string
         std::string str(command.begin(), command.end());
         std::cout << "Transport::send: " << str << std::endl;
         //send
-        serial.writeString(str);
+        sp->writeString(str);
         std::cout << "Transport::readline" << std::endl;
 
-        return serial.readLine();
+        return sp->readLine();
 
         // Lambda calling async readLine (threaded).
         /*std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
@@ -58,8 +54,15 @@ std::vector<uint8_t> Transport_layer::request_serial(const std::vector<uint8_t> 
 
 Transport_layer::answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
+#ifdef FAKE_SERIAL
+    Serial_fake serial(port_, BAUDRATE);
+#else
+    SimpleSerial serial(port_, BAUDRATE);
+#endif
+    //Serial_fake serial(port_, BAUDRATE);
+
     std::vector<uint8_t> answw;
-    std::vector<uint8_t> answer = Transport_layer::request_serial(encoded, &answw);
+    std::vector<uint8_t> answer = Transport_layer::request_serial(&serial, encoded, &answw);
     // TODO check that answer size is > 6 (ID + checksum)
     struct answer_t ans;
     if(answer.size() < 6){
