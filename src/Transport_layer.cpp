@@ -25,31 +25,27 @@ std::vector<uint8_t> Transport_layer::request_serial(Serial_port* sp, const std:
         sp->writeString(str);
         std::cout << "Transport::readline" << std::endl;
 
-        return sp->readLine();
-
         // Lambda calling async readLine (threaded).
-        /*std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&serial](){
+        std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&sp](){
             std::cout<<"futur function"<<std::endl;
-            return serial.readLine();
+            return sp->readLine();
         });
 
         std::future_status status = future.wait_for(std::chrono::seconds(1));
         switch(status) {
-           // case std::future_status::deferred: std::cout << "deferred\n"; break;
             case std::future_status::timeout: std::cout << "timeout\n"; break;
-           // case std::future_status::ready: std::cout << "ready!\n"; break;
             default:
                 break;
         }   // TODO catch if timeout was raised, do something with it.
-
-        return future.get();*/
+        *answer = future.get();
+        return *answer;
     }
     catch(boost::system::system_error& e)
     {
         std::cout<<"Error: "<<e.what()<<std::endl;
         return command;
     }
-    answer->push_back(1);
+    answer->clear();
 }
 
 Transport_layer::answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
@@ -59,8 +55,6 @@ Transport_layer::answer_t Transport_layer::request_command(const std::vector<uin
 #else
     SimpleSerial serial(port_, BAUDRATE);
 #endif
-    //Serial_fake serial(port_, BAUDRATE);
-
     std::vector<uint8_t> answw;
     std::vector<uint8_t> answer = Transport_layer::request_serial(&serial, encoded, &answw);
     // TODO check that answer size is > 6 (ID + checksum)

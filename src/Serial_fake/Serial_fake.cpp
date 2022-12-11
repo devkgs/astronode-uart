@@ -4,6 +4,8 @@
 #include "Transport_utils.h"
 #include "Opcodes_id.h"
 
+#include <unistd.h>
+
 Serial_fake::Serial_fake(__attribute__((unused)) std::string port, __attribute__((unused)) unsigned int baud_rate){
     std::cout<<"Serial fake constructor"<<std::endl;
 }
@@ -40,6 +42,7 @@ void Serial_fake::writeString(std::string request) {
 }
 
 std::vector<uint8_t> Serial_fake::readLine() {
+        //usleep(2*1000*1000);  // for timeout testing
         std::cout<<"Serial fake readLine"<<std::endl;
         answer_.erase(answer_.begin());
         answer_.pop_back();
