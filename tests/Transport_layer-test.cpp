@@ -16,12 +16,6 @@ public:
     //MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
 
-TEST(TransportTest, request_command_test){
-//    Transport_layer tr("port");
-//    std::vector<uint8_t> command = {0x05, 0x03, 0x0, 0x03};
-//    Transport_layer::answer_t ans = tr.request_command(command);
-}
-
 TEST(TransportTest, request_serial_test)
 {
     std::vector<uint8_t> command = {0x02,0x30,0x35,0x30,0x33,0x30,0x30,0x30,0x33,0x42,0x36,0x35,0x31,0x03}; // CFG_W command
@@ -32,8 +26,9 @@ TEST(TransportTest, request_serial_test)
 
     EXPECT_CALL(serial , readLine()).Times(1).WillOnce(Return(expected_ans));
     EXPECT_CALL(serial, writeString(std::string(command.begin(), command.end()))).Times(1);
-    std::vector<uint8_t> ans = tr.request_serial(&serial, command, &ans_param);
-    ASSERT_EQ(expected_ans, ans);
+    Transport_layer::serial_port_error_code_t err = tr.request_serial(&serial, command, &ans_param);
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, err);
     ASSERT_EQ(expected_ans, ans_param);
 }
+
 
