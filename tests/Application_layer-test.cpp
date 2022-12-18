@@ -5,7 +5,7 @@
 #include "Transport_layer.h"
 
 using ::testing::Return;
-using ::testing::Return;
+using ::testing::Return;        // TODO remove this statement
 using ::testing::Exactly;
 //using ::testing::AtLeast;
 //using ::testing::AtMost;
@@ -37,7 +37,7 @@ TEST(CommandTest, get_answer_error_code_test){
 
     // call request_command first to save locally the result
     Transport_layer::answer_t mock_ans;
-    mock_ans.error_code = serial_port_error_code::NO_ERROR;
+    mock_ans.error_code = Transport_layer::serial_port_error_code::NO_ERROR;
     mock_ans.answer_id = 0x85;
     mock_ans.answer_parameters = {0};
 
@@ -83,25 +83,25 @@ TEST(CommandTest, get_serial_port_error_code_test){
 
     // call request_command first to save locally the result
     Transport_layer::answer_t mock_ans;
-    mock_ans.error_code = serial_port_error_code_t::NO_ERROR;
+    mock_ans.error_code = Transport_layer::serial_port_error_code_t::NO_ERROR;
     mock_ans.answer_id = 0x95;
     mock_ans.answer_parameters = {0};
 
     std::vector<uint8_t> data = {0x15};
 
     // request_cmd not called, return false
-    ASSERT_EQ(serial_port_error_code_t::NO_REQUEST_SENT, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_REQUEST_SENT, cmd->get_serial_port_error_code());
 
     // no error
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
-    ASSERT_EQ(serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
 
     // error
-    mock_ans.error_code = serial_port_error_code_t::TIMEOUT_ERROR;
+    mock_ans.error_code = Transport_layer::serial_port_error_code_t::TIMEOUT_ERROR;
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd(data);
-    ASSERT_EQ(serial_port_error_code_t::TIMEOUT_ERROR, cmd->get_serial_port_error_code());
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::TIMEOUT_ERROR, cmd->get_serial_port_error_code());
 
     delete cmd;
 }

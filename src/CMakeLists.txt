@@ -7,7 +7,7 @@ set(BINARY ${CMAKE_PROJECT_NAME})
 
 ## src
 #set(TEST_SRCS main.cpp RequestCommand-test.cpp RequestCommand-test.h Transport_layer.cpp Transport_layer.h)
-file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true *.h *.cpp)  # TODO do not include Serial_fake and Serial_hardware dir
 
 set(SOURCES ${SOURCES})
 
@@ -18,7 +18,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 #fake serial build
 if (FAKE_SERIAL_BUILD STREQUAL 1)
     add_definitions(-DFAKE_SERIAL)
-    add_executable(${BINARY}_fake_serial ${SOURCES} Serial_fake/Serial_fake.cpp Opcodes_id.h)
+    add_executable(${BINARY}_fake_serial ${SOURCES} Serial_fake/Serial_fake.cpp)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     target_link_libraries(${BINARY}_fake_serial PRIVATE Threads::Threads)

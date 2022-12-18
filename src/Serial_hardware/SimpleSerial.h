@@ -13,8 +13,9 @@
 #include <boost/asio.hpp>
 #include <vector>
 #include <iostream>
+#include "Serial_port.h"
 
-class SimpleSerial
+class SimpleSerial : public Serial_port
 {
 public:
     /**
