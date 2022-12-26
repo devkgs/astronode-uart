@@ -54,8 +54,51 @@ public:
     bool cfg_r_get_reset_notification_evt_pin_enabled(std::vector<uint8_t> astronode_answer);
     bool cfg_r_get_command_available_evt_pin_enabled(std::vector<uint8_t> astronode_answer);
     bool cfg_r_get_message_transmission_pending_evt_pin_enabled(std::vector<uint8_t> astronode_answer);
-    // ...
-
+    // RTC_R
+    std::vector<uint8_t> rtc_r_build_command(void);
+    uint32_t rtc_r_get_rtc_time(std::vector<uint8_t> astronode_answer);
+    // NCO_R
+    std::vector<uint8_t> nco_r_build_command(void);
+    uint32_t nco_r_get_time_to_next_pass(std::vector<uint8_t> astronode_answer);
+    // MGI_R
+    std::vector<uint8_t> mgi_r_build_command(void);
+    // MSN_R
+    std::vector<uint8_t> msn_r_build_command(void);
+    // MPN_R
+    std::vector<uint8_t> mpn_r_build_command(void);
+    // PLD_E
+    std::vector<uint8_t> pld_e_build_command(uint16_t payload_id, const std::string payload_data);
+    uint16_t pld_e_get_payload_id(std::vector<uint8_t> astronode_answer);
+    // PLD_D
+    std::vector<uint8_t> pld_d_build_command(void);
+    uint16_t pld_d_get_payload_id(std::vector<uint8_t> astronode_answer);
+    // PLD_F
+    std::vector<uint8_t> pld_f_build_command(void);
+    // GEO_W
+    std::vector<uint8_t> geo_w_build_command(int32_t lat, int32_t lng); // ex: lat = 465343400 for 46.53434
+    // EVT_R
+    std::vector<uint8_t> evt_r_build_command(void);
+    bool evt_r_get_sak_available(std::vector<uint8_t> astronode_answer);
+    bool evt_r_get_module_reset(std::vector<uint8_t> astronode_answer);
+    bool evt_r_get_command_available(std::vector<uint8_t> astronode_answer);
+    bool evt_r_get_message_transmit_pending(std::vector<uint8_t> astronode_answer);
+    // SAK_R
+    std::vector<uint8_t> sak_r_build_command(void);
+    uint16_t sak_r_get_payload_id(std::vector<uint8_t> astronode_answer);
+    // SAK_C
+    std::vector<uint8_t> sak_c_build_command(void);
+    // CMD_R
+    std::vector<uint8_t> cmd_r_build_command(void);
+    uint32_t cmd_r_get_created_date(std::vector<uint8_t> astronode_answer);
+    std::vector<uint8_t> cmd_r_get_payload(std::vector<uint8_t> astronode_answer);
+    // CMD_C
+    std::vector<uint8_t> cmd_c_build_command(void);
+    // RES_C
+    std::vector<uint8_t> res_c_build_command(void);
+    // VAL_W
+    std::vector<uint8_t> val_w_build_command(void);
+    // TTX_S
+    std::vector<uint8_t> ttx_s_build_command(uint8_t transmit_duration_sec);
 
 };
 

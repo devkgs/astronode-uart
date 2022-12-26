@@ -235,12 +235,267 @@ TEST(AstronodeCmdTest, cfg_r_get_message_transmission_pending_evt_pin_enabled_te
     delete cmd;
 }
 
+TEST(AstronodeCmdTest, rtc_r_build_command_test){
+    auto cmd = new Astronode_command();
 
+    std::vector<uint8_t> expected_ans = {0x17};
+    ASSERT_EQ(expected_ans, cmd->rtc_r_build_command());
 
+    delete cmd;
+}
 
+TEST(AstronodeCmdTest, rtc_r_get_rtc_time_test){
+    auto cmd = new Astronode_command();
 
+    std::vector<uint8_t> astronode_answer = {0x00, 0x67, 0xC2, 0x03};
+    ASSERT_EQ(63072000, cmd->rtc_r_get_rtc_time(astronode_answer));
 
+    delete cmd;
+}
 
+TEST(AstronodeCmdTest, nco_r_build_command_test){
+    auto cmd = new Astronode_command();
 
+    std::vector<uint8_t> expected_ans = {0x18};
+    ASSERT_EQ(expected_ans, cmd->nco_r_build_command());
 
+    delete cmd;
+}
 
+TEST(AstronodeCmdTest, nco_r_get_time_to_next_pass_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0xB4, 0x2D, 0x00, 0x00};
+    ASSERT_EQ(11700, cmd->nco_r_get_time_to_next_pass(astronode_answer));
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, mgi_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x19};
+    ASSERT_EQ(expected_ans, cmd->mgi_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, msn_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x1A};
+    ASSERT_EQ(expected_ans, cmd->msn_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, mpn_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x1B};
+    ASSERT_EQ(expected_ans, cmd->mpn_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, pld_e_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> data = {0x03, 0xE9, 0x54, 0x65, 0x73, 0x74};
+    std::vector<uint8_t> expected_ans = data;
+    expected_ans.insert(expected_ans.begin(), 0x25);
+
+    ASSERT_EQ(expected_ans, cmd->pld_e_build_command(1001, "Test"));
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, pld_e_get_payload_id_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x03, 0xE9};
+    ASSERT_EQ(1001, cmd->pld_e_get_payload_id(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, pld_d_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x26};
+    ASSERT_EQ(expected_ans, cmd->pld_d_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, pld_d_get_payload_id_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x03, 0xE9};
+    ASSERT_EQ(1001, cmd->pld_d_get_payload_id(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, pld_f_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x27};
+    ASSERT_EQ(expected_ans, cmd->pld_f_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, geo_w_build_command){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans =  {0x35,0xA8, 0x93, 0xBC, 0x1B, 0x4E, 0xD6, 0xEB, 0x03};
+    ASSERT_EQ(expected_ans, cmd->geo_w_build_command(465343400, 65787470));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, evt_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x65};
+    ASSERT_EQ(expected_ans, cmd->evt_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, evt_r_get_sak_available_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x1};
+    ASSERT_TRUE(cmd->evt_r_get_sak_available(astronode_answer));
+
+    astronode_answer = {0x0};
+    ASSERT_FALSE(cmd->evt_r_get_sak_available(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, evt_r_get_module_reset_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x2};
+    ASSERT_TRUE(cmd->evt_r_get_module_reset(astronode_answer));
+
+    astronode_answer = {0x0};
+    ASSERT_FALSE(cmd->evt_r_get_module_reset(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTerst, evt_r_get_command_available_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x4};
+    ASSERT_TRUE(cmd->evt_r_get_command_available(astronode_answer));
+
+    astronode_answer = {0x0};
+    ASSERT_FALSE(cmd->evt_r_get_command_available(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTerst, evt_r_get_message_transmit_pending_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x8};
+    ASSERT_TRUE(cmd->evt_r_get_message_transmit_pending(astronode_answer));
+
+    astronode_answer = {0x0};
+    ASSERT_FALSE(cmd->evt_r_get_message_transmit_pending(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, sak_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x45};
+    ASSERT_EQ(expected_ans, cmd->sak_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, sak_r_get_payload_id_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> astronode_answer = {0x03, 0xE9};
+    ASSERT_EQ(1001, cmd->sak_r_get_payload_id(astronode_answer));
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, sak_c_buid_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x46};
+    ASSERT_EQ(expected_ans, cmd->sak_c_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, cmd_r_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x47};
+    ASSERT_EQ(expected_ans, cmd->cmd_r_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, cmd_r_get_created_date_test){
+    auto cmd = new Astronode_command();
+
+    //std::vector<uint8_t> astronode_answer =  {0x48, 0x65 ,0x6C, 0x6C, 0x6F, 0x31, 0x32, 0x33, 0x34};
+    // TODO add test function
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, cmd_r_get_payload_test){
+    auto cmd = new Astronode_command();
+
+    //std::vector<uint8_t> astronode_answer =  {0x48, 0x65 ,0x6C, 0x6C, 0x6F, 0x31, 0x32, 0x33, 0x34};
+    // TODO add test function
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, cmd_c_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x48};
+    ASSERT_EQ(expected_ans, cmd->cmd_c_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, res_c_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x55};
+    ASSERT_EQ(expected_ans, cmd->res_c_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, val_w_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x60};
+    ASSERT_EQ(expected_ans, cmd->val_w_build_command());
+
+    delete cmd;
+}
+
+TEST(AstronodeCmdTest, ttx_s_build_command_test){
+    auto cmd = new Astronode_command();
+
+    std::vector<uint8_t> expected_ans = {0x61, 123};
+    ASSERT_EQ(expected_ans, cmd->ttx_s_build_command(123));
+
+    delete cmd;
+}
