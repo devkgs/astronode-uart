@@ -22,6 +22,7 @@ public:
         std::vector<uint8_t> answer_checksum;
         uint8_t error_code;
     };
+
     typedef enum serial_port_error_code
     {
         NO_ERROR                = 0,
