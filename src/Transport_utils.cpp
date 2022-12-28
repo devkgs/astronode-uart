@@ -58,8 +58,15 @@ std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
     return encoded;
 }
 
-bool Transport_utils::is_answer_crc_valid(__attribute__((unused)) std::vector<uint8_t> decoded_frame){  // TODO remove unused parameter
-    return true;   // TODO check frame crc
+bool Transport_utils::is_answer_crc_valid( std::vector<uint8_t> decoded_frame, uint16_t expected_crc){
+    uint8_t data[COMMAND_CONTENT_MAX_SIZE] = {0};
+    std::copy(decoded_frame.begin(), decoded_frame.end(), data);
+    uint16_t computed_crc = Transport_utils::compute_crc(data, decoded_frame.size());
+
+    if(computed_crc == expected_crc){
+        return true;
+    }
+    return false;
 }
 
 std::vector<uint8_t> Transport_utils::get_command_parameters(std::vector<uint8_t> decoded_frame){

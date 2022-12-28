@@ -15,7 +15,8 @@ public:
     static uint8_t get_command_id(std::vector<uint8_t> decoded_frame);
     static std::vector<uint8_t> get_command_parameters(std::vector<uint8_t> decoded_frame);
     static std::vector<uint8_t> get_command_crc(std::vector<uint8_t> decoded_frame);
-    static bool is_answer_crc_valid(std::vector<uint8_t> decoded_frame);
+ //   static uint16_t calculate_crc(std::vector<uint8_t> data, uint16_t data_len, uint16_t init_value);
+    static bool is_answer_crc_valid(std::vector<uint8_t> decoded_frame, uint16_t expected_crc);
 };
 
 

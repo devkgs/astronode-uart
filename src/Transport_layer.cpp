@@ -66,7 +66,8 @@ Transport_layer::answer_t Transport_layer::request_command(const std::vector<uin
     std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);
 
     if (error_code == Transport_layer::serial_port_error_code_t::NO_ERROR){
-        ans.error_code = Transport_utils::is_answer_crc_valid(decoded_answer_) ? NO_ERROR : CRC_ERROR;
+      //  ans.error_code = Transport_utils::is_answer_crc_valid(Transport_utils::get_command_parameters(decoded_answer_), Transport_utils::get_command_crc(decoded_answer_)) ? NO_ERROR : CRC_ERROR;
+        ans.error_code = NO_ERROR;
     }
     else{
         ans.error_code = error_code;

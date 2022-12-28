@@ -30,7 +30,7 @@ public:
     astronode_error_code get_answer_error_code(Transport_layer::answer_t ans);
 
     // CFG_W
-    std::vector<uint8_t>  cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit);
+    std::vector<uint8_t> cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit);
     // WIF_W
     std::vector<uint8_t> wif_w_build_command(std::string wlan_ssid, std::string wlan_key, std::string auth_token);
     // SSC_W
