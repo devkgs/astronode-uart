@@ -15,7 +15,7 @@ void Application_layer::request_cmd(const std::vector<uint8_t> command){
         }
     }
     std::cout<<std::endl;
-    Transport_layer::answer_t ans = tr_->request_command(command);
+    astronode_answer_t ans = tr_->request_command(command);
     command_id_sent_ = command.at(0);
     decoded_answer_parameters_ = ans.answer_parameters;
     decoded_answer_command_id_ = ans.answer_id;

@@ -26,9 +26,10 @@ public:
         ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
     } astronode_error_code_t;
 
-    // Common
-    astronode_error_code get_answer_error_code(Transport_layer::answer_t ans);
+ //   Astronode_command(std::shared_ptr<Transport_layer> tr);
 
+    // Common
+    astronode_error_code get_answer_error_code(astronode_answer_t ans);
     // CFG_W
     std::vector<uint8_t> cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit);
     // WIF_W
@@ -100,6 +101,8 @@ public:
     // TTX_S
     std::vector<uint8_t> ttx_s_build_command(uint8_t transmit_duration_sec);
 
+private:
+    std::shared_ptr<Transport_layer> tr_;
 };
 
 

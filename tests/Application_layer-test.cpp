@@ -13,7 +13,7 @@ using ::testing::Exactly;
 class MockTransport : public Transport_layer{
 public:
     MockTransport(std::string port) : Transport_layer(port) {}
-    MOCK_METHOD(Transport_layer::answer_t, request_command, (const std::vector<uint8_t> command), ());
+    MOCK_METHOD(astronode_answer_t, request_command, (const std::vector<uint8_t> command), ());
    // MOCK_METHOD(std::vector<uint8_t>, get_answer_parameters, (), ());
 };
 
@@ -36,7 +36,7 @@ TEST(CommandTest, get_answer_error_code_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.error_code = Transport_layer::serial_port_error_code::NO_ERROR;
     mock_ans.answer_id = 0x85;
     mock_ans.answer_parameters = {0};
@@ -82,7 +82,7 @@ TEST(CommandTest, get_serial_port_error_code_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.error_code = Transport_layer::serial_port_error_code_t::NO_ERROR;
     mock_ans.answer_id = 0x95;
     mock_ans.answer_parameters = {0};
@@ -112,7 +112,7 @@ TEST(CommandTest, get_answer_parameters_test){
     auto cmd = new Application_layer(tr);
 
     // call request_command first to save locally the result
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x12, 0x34};
     std::vector<uint8_t> data = {0x15};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -190,7 +190,7 @@ TEST(CommandTest, cfg_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -204,7 +204,7 @@ TEST(CommandTest, cfg_r_get_product_id_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -219,7 +219,7 @@ TEST(CommandTest, cfg_r_get_hardware_revision_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -234,7 +234,7 @@ TEST(CommandTest, cfg_r_get_firmware_major_version_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -249,7 +249,7 @@ TEST(CommandTest, cfg_r_get_firmware_minor_version_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -264,7 +264,7 @@ TEST(CommandTest, cfg_r_get_firmware_revision_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x05, 0x00, 0x01};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -279,7 +279,7 @@ TEST(CommandTest, cfg_r_get_payload_ack_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // payload ack is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x01, 0x00, 0x01};
@@ -304,7 +304,7 @@ TEST(CommandTest, cfg_r_get_add_geolocation_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // add geolocation is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x02, 0x00, 0x01};
@@ -329,7 +329,7 @@ TEST(CommandTest, cfg_r_get_ephemeris_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // ephemeris enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x04, 0x00, 0x01};
@@ -354,7 +354,7 @@ TEST(CommandTest, cfg_r_get_deep_sleep_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // deep sleep enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x01};
@@ -379,7 +379,7 @@ TEST(CommandTest, cfg_r_get_payload_ack_evt_pin_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // payload ack evt pin enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x01};
@@ -404,7 +404,7 @@ TEST(CommandTest, cfg_r_get_reset_notification_evt_pin_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // reset notification evt pin enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x02};
@@ -429,7 +429,7 @@ TEST(CommandTest, cfg_r_get_command_available_evt_pin_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // command available evt pin enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x04};
@@ -454,7 +454,7 @@ TEST(CommandTest, cfg_r_get_message_transmission_pending_evt_pin_enabled_test) {
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_cfg_r(tr);
     std::vector<uint8_t> data = {0x15};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
 
     // message transmission pending evt pin enabled is true
     mock_ans.answer_parameters = {0x03, 0x01, 0x02, 0x01, 0x00, 0x08, 0x00, 0x08};
@@ -480,7 +480,7 @@ TEST(CommandTest, rtc_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_rtc_r(tr);
     std::vector<uint8_t> data = {0x17};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0x00, 0x67, 0xC2, 0x03};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
     cmd->request_cmd();
@@ -494,7 +494,7 @@ TEST(CommandTest, nco_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_nco_r(tr);
     std::vector<uint8_t> data = {0x18};
-    Transport_layer::answer_t mock_ans;
+    astronode_answer_t mock_ans;
     mock_ans.answer_parameters = {0xB4, 0x2D, 0x00, 0x00};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(mock_ans));
@@ -509,7 +509,7 @@ TEST(CommandTest, mgi_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mgi_r(tr);
     std::vector<uint8_t> data = {0x19};
-    Transport_layer::answer_t expected_ans;
+    astronode_answer_t expected_ans;
     expected_ans.answer_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -523,7 +523,7 @@ TEST(CommandTest, msn_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_msn_r(tr);
     std::vector<uint8_t> data = {0x1A};
-    Transport_layer::answer_t expected_ans;
+    astronode_answer_t expected_ans;
     expected_ans.answer_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -537,7 +537,7 @@ TEST(CommandTest, mpn_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_mpn_r(tr);
     std::vector<uint8_t> data = {0x1B};
-    Transport_layer::answer_t expected_ans;
+    astronode_answer_t expected_ans;
     expected_ans.answer_parameters = {0x36};   //don't care about the content
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd();
@@ -554,7 +554,7 @@ TEST(CommandTest, pld_e_test){
     std::vector<uint8_t> data_with_id = data;
     data_with_id.insert(data_with_id.begin(), 0x25);
 
-    Transport_layer::answer_t expected_ans;
+    astronode_answer_t expected_ans;
     expected_ans.answer_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data_with_id)).Times(1).WillOnce(Return(expected_ans));
     cmd->request_cmd(1001, "Test");
@@ -573,7 +573,7 @@ TEST(CommandTest, pld_d_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_pld_d(tr);
     std::vector<uint8_t> data = {0x26};
-    Transport_layer::answer_t command_id_ans;
+    astronode_answer_t command_id_ans;
     command_id_ans.answer_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(command_id_ans));
     cmd->request_cmd();
@@ -614,7 +614,7 @@ TEST(CommandTest, evt_r_test){
     cmd->request_cmd();
 
     // get parameters test
-    Transport_layer::answer_t expected_ans;
+    astronode_answer_t expected_ans;
     expected_ans.answer_parameters = {0xf};
 
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(expected_ans));
@@ -677,7 +677,7 @@ TEST(CommandTest, sak_r_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_sak_r(tr);
     std::vector<uint8_t> data = {0x45};
-    Transport_layer::answer_t command_id_ans;
+    astronode_answer_t command_id_ans;
     command_id_ans.answer_parameters = {0x03, 0xE9};
     EXPECT_CALL(*tr, request_command(data)).Times(1).WillOnce(Return(command_id_ans));
     cmd->request_cmd();
@@ -704,7 +704,7 @@ TEST(CommandTest, cmd_r_test){
   /*  std::vector<uint8_t> data = {0x47};
     std::vector<uint8_t> payload_8bytes = {0x48, 0x65 ,0x6C, 0x6C, 0x6F, 0x31, 0x32, 0x33, 0x34};
 
-    Transport_layer::answer_t command_id_ans;
+    Transport_layer::astronode_answer_t command_id_ans;
     command_id_ans.answer_parameters = {0x03, 0xE9};
 
     std::vector<uint8_t> expected_ans = {0x03, 0xC2, 0x67, 0x00};

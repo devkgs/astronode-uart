@@ -7,7 +7,7 @@
 
 TEST(AstronodeCmdTest, get_answer_error_code_test){
     auto cmd = new Astronode_command();
-    Transport_layer::answer_t cmd_ans;
+    astronode_answer_t cmd_ans;
 
     // no error
     cmd_ans.error_code = Transport_layer::serial_port_error_code::NO_ERROR;

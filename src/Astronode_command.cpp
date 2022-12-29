@@ -1,7 +1,9 @@
 #include "Astronode_command.h"
 #include <iostream>
 
-Astronode_command::astronode_error_code Astronode_command::get_answer_error_code(Transport_layer::answer_t ans){
+//Astronode_command::Astronode_command(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
+
+Astronode_command::astronode_error_code Astronode_command::get_answer_error_code(astronode_answer_t ans){
     if(ans.answer_id == 0xFF){
         // TODO check param size
         uint16_t error_code = (ans.answer_parameters.at(0) << 8 ) | ans.answer_parameters.at(1);
@@ -10,6 +12,7 @@ Astronode_command::astronode_error_code Astronode_command::get_answer_error_code
         return ASTRONODE_ERR_CODE_OK;
     }
 }
+
 
 std::vector<uint8_t>  Astronode_command::cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){
     std::cout << __PRETTY_FUNCTION__ << std::endl;

@@ -95,4 +95,11 @@ typedef enum debug_sub_opcodes
     DEBUG_OPCODE_DISABLE_RETRY_RAND    = 0x15,
 }debug_sub_opcodes;
 
+struct astronode_answer_t{
+    uint8_t answer_id;
+    std::vector<uint8_t> answer_parameters;
+    uint16_t answer_checksum;
+    uint8_t error_code; // serial port error code
+};
+
 #endif //ASTROUART_OPCODES_ID_H
