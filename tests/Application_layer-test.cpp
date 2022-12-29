@@ -154,7 +154,7 @@ TEST(CommandTest, wif_w_test){
     delete cmd;
 }
 
-TEST(CommandTest, ssh_w_test){
+TEST(CommandTest, ssc_w_test){
     std::shared_ptr<MockTransport> tr = std::make_shared<MockTransport>("fake_port");
     auto cmd = new Command_ssc_w(tr);
     std::vector<uint8_t> data = {0x07, 0x12, 0x1};

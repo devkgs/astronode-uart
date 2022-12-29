@@ -36,13 +36,13 @@ uint16_t Transport_utils::compute_crc(uint8_t *p_data, uint8_t length) {
     return crc;
 }
 
-std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
+std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> command) {
     uint8_t data[COMMAND_CONTENT_MAX_SIZE] = {0};
-    std::copy(args.begin(), args.end(), data);
-    int length = args.size();
+    std::copy(command.begin(), command.end(), data);
+    int length = command.size();
 
     // add crc at the end
-    uint16_t crc = Transport_utils::compute_crc(data, args.size());
+    uint16_t crc = Transport_utils::compute_crc(data, command.size());
     data[length++] = (uint8_t) crc;
     data[length++] = (uint8_t) (crc >> 8);
 
@@ -58,27 +58,35 @@ std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
     return encoded;
 }
 
-bool Transport_utils::is_answer_crc_valid(__attribute__((unused)) std::vector<uint8_t> decoded_frame){  // TODO remove unused parameter
-    return true;   // TODO check frame crc
+bool Transport_utils::is_answer_crc_valid( std::vector<uint8_t> decoded_answer){
+
+    uint8_t data[COMMAND_CONTENT_MAX_SIZE] = {0};
+    std::copy(decoded_answer.begin(), decoded_answer.end()-2, data);
+    uint16_t computed_crc = Transport_utils::compute_crc(data, decoded_answer.size()-2);
+
+    if(computed_crc == Transport_utils::get_command_crc(decoded_answer)){
+        return true;
+    }
+    return false;
 }
 
-std::vector<uint8_t> Transport_utils::get_command_parameters(std::vector<uint8_t> decoded_frame){
-    return {decoded_frame.begin() + 1, decoded_frame.end() - 2};
+std::vector<uint8_t> Transport_utils::get_command_parameters(std::vector<uint8_t> decoded_answer){
+    return {decoded_answer.begin() + 1, decoded_answer.end() - 2};
 }
 
-uint8_t Transport_utils::get_command_id(std::vector<uint8_t> decoded_frame){
-    return decoded_frame.at(0);
+uint8_t Transport_utils::get_command_id(std::vector<uint8_t> decoded_answer){
+    return decoded_answer.at(0);
 }
 
-std::vector<uint8_t> Transport_utils::get_command_crc(std::vector<uint8_t> decoded_frame){
-    return {decoded_frame.end() - 2, decoded_frame.end()};
+uint16_t Transport_utils::get_command_crc(std::vector<uint8_t> decoded_answer){
+    return decoded_answer.at(decoded_answer.size() - 1) << 8 | decoded_answer.at(decoded_answer.size() - 2);
 }
 
-std::vector<uint8_t> Transport_utils::decode(std::vector<uint8_t> frame) {
+std::vector<uint8_t> Transport_utils::decode(std::vector<uint8_t> encoded_answer) {
     std::vector<uint8_t> decoded;
-    for (long unsigned int i = 0; i < frame.size(); i = i + 2) {
-        uint8_t first_digit = (frame.at(i) - ascii_offset(frame.at(i))) << 4;
-        uint8_t second_digit = frame.at(i + 1) - ascii_offset(frame.at(i + 1));
+    for (long unsigned int i = 0; i < encoded_answer.size(); i = i + 2) {
+        uint8_t first_digit = (encoded_answer.at(i) - ascii_offset(encoded_answer.at(i))) << 4;
+        uint8_t second_digit = encoded_answer.at(i + 1) - ascii_offset(encoded_answer.at(i + 1));
         decoded.push_back(first_digit + second_digit);
     }
     return decoded;

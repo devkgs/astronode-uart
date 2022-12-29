@@ -23,7 +23,6 @@ Transport_layer::serial_port_error_code_t Transport_layer::request_serial(Serial
         sp->writeString(str);
         std::cout << "Transport::readline" << std::endl;
 
-
         // Lambda calling async readLine (threaded).
         std::future<std::vector<uint8_t>> future = std::async(std::launch::async, [&sp](){
             std::cout<<"future function"<<std::endl;
@@ -63,17 +62,17 @@ Transport_layer::answer_t Transport_layer::request_command(const std::vector<uin
         ans.error_code = NO_VALUE_ERROR;
         return ans;
     }
-    std::vector<uint8_t> decoded_answer_ =  Transport_utils::decode(answer);
+    std::vector<uint8_t> decoded_answer =  Transport_utils::decode(answer);
 
     if (error_code == Transport_layer::serial_port_error_code_t::NO_ERROR){
-        ans.error_code = Transport_utils::is_answer_crc_valid(decoded_answer_) ? NO_ERROR : CRC_ERROR;
+        ans.error_code = Transport_utils::is_answer_crc_valid(decoded_answer) ? NO_ERROR : CRC_ERROR;
     }
     else{
         ans.error_code = error_code;
     }
 
-    ans.answer_parameters = Transport_utils::get_command_parameters(decoded_answer_);
-    ans.answer_id = Transport_utils::get_command_id(decoded_answer_);
-    ans.answer_checksum = Transport_utils::get_command_crc(decoded_answer_);
+    ans.answer_parameters = Transport_utils::get_command_parameters(decoded_answer);
+    ans.answer_id = Transport_utils::get_command_id(decoded_answer);
+    ans.answer_checksum = Transport_utils::get_command_crc(decoded_answer);
     return ans;
 }

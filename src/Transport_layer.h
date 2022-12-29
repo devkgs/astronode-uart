@@ -19,9 +19,10 @@ public:
     struct answer_t{
         uint8_t answer_id;
         std::vector<uint8_t> answer_parameters;
-        std::vector<uint8_t> answer_checksum;
-        uint8_t error_code;
+        uint16_t answer_checksum;
+        uint8_t error_code; // serial port error code
     };
+
     typedef enum serial_port_error_code
     {
         NO_ERROR                = 0,
