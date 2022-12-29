@@ -1,7 +1,8 @@
 #include "Astronode_command.h"
 #include <iostream>
 
-//Astronode_command::Astronode_command(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
+Astronode_command::Astronode_command(std::shared_ptr<Transport_layer> tr) : tr_(std::move(tr)){}
+
 
 Astronode_command::astronode_error_code Astronode_command::get_answer_error_code(astronode_answer_t ans){
     if(ans.answer_id == 0xFF){
@@ -13,8 +14,7 @@ Astronode_command::astronode_error_code Astronode_command::get_answer_error_code
     }
 }
 
-
-std::vector<uint8_t>  Astronode_command::cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){
+std::vector<uint8_t> Astronode_command::cfg_w(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit){
     std::cout << __PRETTY_FUNCTION__ << std::endl;
     uint8_t byte0 = ((deep_sleep_enabled_bit & 0x01) << 3) | ((enable_ephemeris_bit & 0x01)<<2) | ((add_geo_bit & 0x01)<<1) | (payload_ack_bit & 0x01);
     uint8_t byte1 = 0;
