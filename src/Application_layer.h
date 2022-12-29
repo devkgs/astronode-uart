@@ -48,7 +48,7 @@ private:
     uint8_t command_id_sent_;
     std::vector<uint8_t> decoded_answer_parameters_;
     uint8_t decoded_answer_command_id_;
-    std::vector<uint8_t> decoded_answer_checksum_;
+    uint16_t decoded_answer_checksum_;
     uint8_t transport_layer_error_;
 };
 
