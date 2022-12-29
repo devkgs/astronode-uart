@@ -58,12 +58,14 @@ std::vector<uint8_t> Transport_utils::encode(std::vector<uint8_t> args) {
     return encoded;
 }
 
-bool Transport_utils::is_answer_crc_valid( std::vector<uint8_t> decoded_frame, uint16_t expected_crc){
-    uint8_t data[COMMAND_CONTENT_MAX_SIZE] = {0};
-    std::copy(decoded_frame.begin(), decoded_frame.end(), data);
-    uint16_t computed_crc = Transport_utils::compute_crc(data, decoded_frame.size());
+bool Transport_utils::is_answer_crc_valid( std::vector<uint8_t> decoded_answer){
 
-    if(computed_crc == expected_crc){
+    uint8_t data[COMMAND_CONTENT_MAX_SIZE] = {0};
+  //  std::copy(parameters.begin(), parameters.end(), data);
+  std::copy(decoded_answer.begin(), decoded_answer.end()-2, data);
+  uint16_t computed_crc = Transport_utils::compute_crc(data, decoded_answer.size()-2);
+
+    if(computed_crc == Transport_utils::get_command_crc(decoded_answer)){
         return true;
     }
     return false;
@@ -77,8 +79,8 @@ uint8_t Transport_utils::get_command_id(std::vector<uint8_t> decoded_frame){
     return decoded_frame.at(0);
 }
 
-std::vector<uint8_t> Transport_utils::get_command_crc(std::vector<uint8_t> decoded_frame){
-    return {decoded_frame.end() - 2, decoded_frame.end()};
+uint16_t Transport_utils::get_command_crc(std::vector<uint8_t> decoded_frame){
+    return decoded_frame.at(decoded_frame.size()-1) << 8 | decoded_frame.at(decoded_frame.size()-2);
 }
 
 std::vector<uint8_t> Transport_utils::decode(std::vector<uint8_t> frame) {
