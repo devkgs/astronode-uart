@@ -1,48 +1,49 @@
 #include "gtest/gtest.h"
 //#include "gmock/gmock.h"
 #include "Serial_fake/Serial_fake.h"
-#include "Application_layer.h"
+#include "Astronode_command.h"
 #include "Transport_layer.h"
+#include "Opcodes_id.h"
 
 
 TEST(SerialFakeTests, cfg_w_test){
     std::vector<uint8_t> expected_ans = {};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
-    auto cmd = new Command_cfg_w(tr);
-    cmd->request_cmd(1, 1, 0, 0, 1, 1);
-    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
-    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+    auto cmd = new Astronode_command(tr);
+    astronode_answer_t ans = cmd->cfg_w( 1, 1, 0, 0, 1, 1);
+    ASSERT_EQ(expected_ans, ans.answer_parameters);
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, ans.error_code);
+    ASSERT_EQ(Astronode_command::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code(ans));
 }
 
 TEST(SerialFakeTests, cfg_r_test){
     std::vector<uint8_t> expected_ans = {1, 2, 3, 4, 5, 6, 7, 8};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
-    auto cmd = new Command_cfg_r(tr);
-    cmd->request_cmd();
-    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
-    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+    auto cmd = new Astronode_command(tr);
+    astronode_answer_t ans = cmd->cfg_r();
+    ASSERT_EQ(expected_ans, ans.answer_parameters);
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, ans.error_code);
+    ASSERT_EQ(Astronode_command::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code(ans));
 }
 
 TEST(SerialFakeTests, wif_w_test){
     std::vector<uint8_t> expected_ans = {};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
-    auto cmd = new Command_wif_w(tr);
-    cmd->request_cmd("wlan_ssid", "wlan_key", "auth_token");
-    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
-    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+    auto cmd = new Astronode_command(tr);
+    astronode_answer_t ans = cmd->wif_w("wlan_ssid", "wlan_key", "auth_token");
+    ASSERT_EQ(expected_ans, ans.answer_parameters);
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t ::NO_ERROR, ans.error_code);
+    ASSERT_EQ(Astronode_command::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code(ans));
 }
 
 TEST(SerialFakeTests, ssc_w_void_answer_test){
     std::vector<uint8_t> expected_ans = {};
     std::shared_ptr<Transport_layer> tr = std::make_shared<Transport_layer>("port");
-    auto cmd = new Command_ssc_w(tr);
-    cmd->request_cmd(0, 0);
-    ASSERT_EQ(expected_ans, cmd->get_answer_parameters());
-    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, cmd->get_serial_port_error_code());
-    ASSERT_EQ(Application_layer::astronode_error_code::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code());
+    auto cmd = new Astronode_command(tr);
+    astronode_answer_t ans = cmd->ssc_w(0,0);
+    ASSERT_EQ(expected_ans, ans.answer_parameters);
+    ASSERT_EQ(Transport_layer::serial_port_error_code_t::NO_ERROR, ans.error_code);
+    ASSERT_EQ(Astronode_command::ASTRONODE_ERR_CODE_OK, cmd->get_answer_error_code(ans));
 }
 
 // TODO test cfg_s fake
