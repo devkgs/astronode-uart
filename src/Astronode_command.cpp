@@ -123,7 +123,7 @@ uint32_t Astronode_command::rtc_r_get_rtc_time(std::vector<uint8_t> astronode_an
     rtc_time += (uint32_t)astronode_answer.at(2) << 16;
     rtc_time += (uint32_t)astronode_answer.at(1) << 8;
     rtc_time += (uint32_t)astronode_answer.at(0);
-    return rtc_time;
+    return rtc_time + ASTROCAST_REF_UNIX_TIME;
 }
 
 astronode_answer_t Astronode_command::nco_r(void){
@@ -137,7 +137,7 @@ uint32_t Astronode_command::nco_r_get_time_to_next_pass(std::vector<uint8_t> ast
     next_pass += (uint32_t)astronode_answer.at(2) << 16;
     next_pass += (uint32_t)astronode_answer.at(1) << 8;
     next_pass += (uint32_t)astronode_answer.at(0);
-    return next_pass;
+    return next_pass;   // TODO verify if ASTROCAST_REF_UNIX_TIME is required here?
 }
 
 astronode_answer_t Astronode_command::mgi_r(void){
@@ -268,11 +268,11 @@ astronode_answer_t Astronode_command::cmd_r(void){
 
 uint32_t Astronode_command::cmd_r_get_created_date(std::vector<uint8_t> astronode_answer){
     // 0x03C26700 becomes 63072000
-    uint32_t created_date = (uint32_t)astronode_answer.at(0) << 24;
-    created_date += (uint32_t)astronode_answer.at(1)<<16;
-    created_date += (uint32_t)astronode_answer.at(2)<<8;
-    created_date += (uint32_t)astronode_answer.at(3);
-    return created_date;
+    uint32_t created_date = (uint32_t)astronode_answer.at(3) << 24;
+    created_date += (uint32_t)astronode_answer.at(2) << 16;
+    created_date += (uint32_t)astronode_answer.at(1) << 8;
+    created_date += (uint32_t)astronode_answer.at(0);
+    return created_date + ASTROCAST_REF_UNIX_TIME;
 }
 
 std::vector<uint8_t> Astronode_command::cmd_r_get_payload(std::vector<uint8_t> astronode_answer){

@@ -9,6 +9,10 @@ class Astronode_command {
 #define SSID_LENGTH 33
 #define PASSWORD_LENGTH 64
 #define TOKEN_LENGTH 97
+
+// Astrocast time
+#define ASTROCAST_REF_UNIX_TIME 1514764800 // 2018-01-01T00:00:00Z (= Astrocast time)
+
 public:
     typedef enum astronode_error_code
     {
