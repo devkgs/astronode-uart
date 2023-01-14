@@ -47,7 +47,7 @@ Transport_layer::serial_port_error_code_t Transport_layer::request_serial(Serial
     }
 }
 
-Transport_layer::answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
+astronode_answer_t Transport_layer::request_command(const std::vector<uint8_t> data){
     std::vector<uint8_t> encoded = Transport_utils::encode(data);
 #ifdef FAKE_SERIAL
     Serial_fake serial(port_, BAUDRATE);
@@ -57,7 +57,7 @@ Transport_layer::answer_t Transport_layer::request_command(const std::vector<uin
     std::vector<uint8_t> answer;
     uint8_t error_code = Transport_layer::request_serial(&serial, encoded, &answer);
     // TODO check that answer size is > 6 (ID + checksum)
-    struct answer_t ans;
+    struct astronode_answer_t ans;
     if(answer.size() < 6){
         ans.error_code = NO_VALUE_ERROR;
         return ans;

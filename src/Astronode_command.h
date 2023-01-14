@@ -9,6 +9,10 @@ class Astronode_command {
 #define SSID_LENGTH 33
 #define PASSWORD_LENGTH 64
 #define TOKEN_LENGTH 97
+
+// Astrocast time
+#define ASTROCAST_REF_UNIX_TIME 1514764800 // 2018-01-01T00:00:00Z (= Astrocast time)
+
 public:
     typedef enum astronode_error_code
     {
@@ -26,21 +30,21 @@ public:
         ASTRONODE_ERR_CODE_NO_CLEAR             = 0x4601,
     } astronode_error_code_t;
 
+    Astronode_command(std::shared_ptr<Transport_layer> tr);
     // Common
-    astronode_error_code get_answer_error_code(Transport_layer::answer_t ans);
-
+    astronode_error_code get_answer_error_code(astronode_answer_t ans);
     // CFG_W
-    std::vector<uint8_t> cfg_w_build_command(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit);
+    astronode_answer_t cfg_w(uint8_t payload_ack_bit, uint8_t add_geo_bit, uint8_t enable_ephemeris_bit, uint8_t deep_sleep_enabled_bit, uint8_t payload_ack_evt_pin_bit, uint8_t reset_notif_evt_pin_bit);
     // WIF_W
-    std::vector<uint8_t> wif_w_build_command(std::string wlan_ssid, std::string wlan_key, std::string auth_token);
+    astronode_answer_t wif_w(std::string wlan_ssid, std::string wlan_key, std::string auth_token);
     // SSC_W
-    std::vector<uint8_t> ssc_w_build_command(uint8_t sat_period_enum, uint8_t enable_search);
+    astronode_answer_t ssc_w(uint8_t sat_period_enum, uint8_t enable_search);
     // CFG_S
-    std::vector<uint8_t> cfg_s_build_command(void);
+    astronode_answer_t cfg_s(void);
     // CFG_F
-    std::vector<uint8_t> cfg_f_build_command(void);
+    astronode_answer_t cfg_f(void);
     // CFG_R
-    std::vector<uint8_t> cfg_r_build_command(void);
+    astronode_answer_t cfg_r(void);
     uint8_t cfg_r_get_product_id(std::vector<uint8_t> astronode_answer);
     uint8_t cfg_r_get_hardware_revision(std::vector<uint8_t> astronode_answer);
     uint8_t cfg_r_get_firmware_major_version(std::vector<uint8_t> astronode_answer);
@@ -55,51 +59,53 @@ public:
     bool cfg_r_get_command_available_evt_pin_enabled(std::vector<uint8_t> astronode_answer);
     bool cfg_r_get_message_transmission_pending_evt_pin_enabled(std::vector<uint8_t> astronode_answer);
     // RTC_R
-    std::vector<uint8_t> rtc_r_build_command(void);
+    astronode_answer_t rtc_r(void);
     uint32_t rtc_r_get_rtc_time(std::vector<uint8_t> astronode_answer);
     // NCO_R
-    std::vector<uint8_t> nco_r_build_command(void);
+    astronode_answer_t nco_r(void);
     uint32_t nco_r_get_time_to_next_pass(std::vector<uint8_t> astronode_answer);
     // MGI_R
-    std::vector<uint8_t> mgi_r_build_command(void);
+    astronode_answer_t mgi_r(void);
     // MSN_R
-    std::vector<uint8_t> msn_r_build_command(void);
+    astronode_answer_t msn_r(void);
     // MPN_R
-    std::vector<uint8_t> mpn_r_build_command(void);
+    astronode_answer_t mpn_r(void);
     // PLD_E
-    std::vector<uint8_t> pld_e_build_command(uint16_t payload_id, const std::string payload_data);
+    astronode_answer_t pld_e(uint16_t payload_id, const std::string payload_data);
     uint16_t pld_e_get_payload_id(std::vector<uint8_t> astronode_answer);
     // PLD_D
-    std::vector<uint8_t> pld_d_build_command(void);
+    astronode_answer_t pld_d(void);
     uint16_t pld_d_get_payload_id(std::vector<uint8_t> astronode_answer);
     // PLD_F
-    std::vector<uint8_t> pld_f_build_command(void);
+    astronode_answer_t pld_f(void);
     // GEO_W
-    std::vector<uint8_t> geo_w_build_command(int32_t lat, int32_t lng); // ex: lat = 465343400 for 46.53434
+    astronode_answer_t geo_w(int32_t lat, int32_t lng); // ex: lat = 465343400 for 46.53434
     // EVT_R
-    std::vector<uint8_t> evt_r_build_command(void);
+    astronode_answer_t evt_r(void);
     bool evt_r_get_sak_available(std::vector<uint8_t> astronode_answer);
     bool evt_r_get_module_reset(std::vector<uint8_t> astronode_answer);
     bool evt_r_get_command_available(std::vector<uint8_t> astronode_answer);
     bool evt_r_get_message_transmit_pending(std::vector<uint8_t> astronode_answer);
     // SAK_R
-    std::vector<uint8_t> sak_r_build_command(void);
+    astronode_answer_t sak_r(void);
     uint16_t sak_r_get_payload_id(std::vector<uint8_t> astronode_answer);
     // SAK_C
-    std::vector<uint8_t> sak_c_build_command(void);
+    astronode_answer_t sak_c(void);
     // CMD_R
-    std::vector<uint8_t> cmd_r_build_command(void);
+    astronode_answer_t cmd_r(void);
     uint32_t cmd_r_get_created_date(std::vector<uint8_t> astronode_answer);
     std::vector<uint8_t> cmd_r_get_payload(std::vector<uint8_t> astronode_answer);
     // CMD_C
-    std::vector<uint8_t> cmd_c_build_command(void);
+    astronode_answer_t cmd_c(void);
     // RES_C
-    std::vector<uint8_t> res_c_build_command(void);
+    astronode_answer_t res_c(void);
     // VAL_W
-    std::vector<uint8_t> val_w_build_command(void);
+    astronode_answer_t val_w(void);
     // TTX_S
-    std::vector<uint8_t> ttx_s_build_command(uint8_t transmit_duration_sec);
+    astronode_answer_t ttx_s(uint8_t transmit_duration_sec);
 
+private:
+    std::shared_ptr<Transport_layer> tr_;
 };
 
 

@@ -36,4 +36,4 @@ endif()
 
 
 ## Google test
-add_library(${BINARY}_lib STATIC ${SOURCES} Application_layer.cpp Application_layer.h)
+add_library(${BINARY}_lib STATIC ${SOURCES} )
